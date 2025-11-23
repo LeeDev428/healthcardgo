@@ -7,6 +7,7 @@ use App\Livewire\Admin\AdminDashboard;
 use App\Livewire\Admin\AppointmentsList;
 use App\Livewire\Admin\BarangayManagement;
 use App\Livewire\Admin\DiseaseSurveillance;
+use App\Livewire\Admin\ManageAnnouncements;
 use App\Livewire\Admin\ManageFeedback;
 use App\Livewire\Admin\ManageHealthCardHistory;
 use App\Livewire\Admin\ManageHealthCards;
@@ -76,6 +77,7 @@ Route::middleware(['auth'])->group(function () {
     // Admin Routes
     Route::prefix('admin')->middleware(['role:super_admin'])->name('admin.')->group(function () {
         Route::get('dashboard', AdminDashboard::class)->name('dashboard');
+        Route::get('announcements', ManageAnnouncements::class)->name('announcements');
         Route::get('reports', AdminReports::class)->name('reports');
         Route::get('reports/print', [ReportController::class, 'adminPrint'])->name('reports.print');
         Route::get('users', UsersManagement::class)->name('users');
@@ -97,6 +99,7 @@ Route::middleware(['auth'])->group(function () {
     // Healthcare Admin Routes (can also approve patients)
     Route::prefix('healthcare-admin')->middleware(['role:healthcare_admin'])->name('healthcare_admin.')->group(function () {
         Route::get('dashboard', HealthcareAdminDashboard::class)->name('dashboard');
+        Route::get('announcements', ManageAnnouncements::class)->name('announcements');
         Route::get('reports', HealthcareAdminReports::class)->name('reports');
         Route::get('reports/print', [ReportController::class, 'healthcarePrint'])->name('reports.print');
         Route::get('appointments', AppointmentManagement::class)->name('appointments');
