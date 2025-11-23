@@ -294,7 +294,9 @@ class AppointmentManagement extends Component
             };
 
             if ($categoryMap) {
-                $query->whereHas('service', fn ($q) => $q->where('category', $categoryMap));
+                $query->whereHas('service', function ($q) use ($categoryMap) {
+                    $q->where('category', $categoryMap);
+                });
             }
         }
 
@@ -327,7 +329,9 @@ class AppointmentManagement extends Component
             };
 
             if ($categoryMap) {
-                $appointmentsQuery->whereHas('service', fn ($q) => $q->where('category', $categoryMap));
+                $appointmentsQuery->whereHas('service', function ($q) use ($categoryMap) {
+                    $q->where('category', $categoryMap);
+                });
             }
         }
 
