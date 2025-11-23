@@ -2,6 +2,7 @@
 
 namespace App\Livewire\HealthcareAdmin;
 
+use App\Enums\AdminCategoryEnum;
 use App\Models\Appointment;
 use App\Models\Patient;
 use App\Models\User;
@@ -66,7 +67,7 @@ class HealthcareAdminDashboard extends Component
             })->whereBetween('scheduled_at', [$startDate, $endDate]);
 
             $noShowData[] = (clone $baseQuery)->where('status', 'no_show')->count();
-            $completedData[] = (clone $baseQuery)->where('status', 'completed')->count();
+            $completedData[] = (clone $baseQuery)->whereIn('status', ['confirmed', 'cancelled'])->count();
             $cancelledData[] = (clone $baseQuery)->where('status', 'cancelled')->count();
         }
 
@@ -108,7 +109,7 @@ class HealthcareAdminDashboard extends Component
                     'pointHoverRadius' => 6,
                 ],
                 [
-                    'label' => 'Completed',
+                    'label' => 'Confirmed',
                     'data' => $completedData,
                     'borderColor' => 'rgb(34, 197, 94)',
                     'backgroundColor' => 'rgba(34, 197, 94, 0.5)',
@@ -161,14 +162,48 @@ class HealthcareAdminDashboard extends Component
         $user = Auth::user();
         $adminCategory = $user->admin_category?->value;
 
-        // Base statistics
+        // Base statistics - filter pending_appointments by admin category
+        $pendingAppointmentsQuery = Appointment::where('status', 'pending');
+        
+        if ($user->role_id === 2 && $user->admin_category && $user->admin_category !== AdminCategoryEnum::MedicalRecords) {
+            $categoryMap = match ($user->admin_category) {
+                AdminCategoryEnum::HealthCard => 'health_card',
+                AdminCategoryEnum::HIV => 'hiv_testing',
+                AdminCategoryEnum::Pregnancy => 'pregnancy_care',
+                default => null,
+            };
+            
+            if ($categoryMap) {
+                $pendingAppointmentsQuery->whereHas('service', function ($q) use ($categoryMap) {
+                    $q->where('category', $categoryMap);
+                });
+            }
+        }
+        
         $statistics = [
             'pending_approvals' => User::where('status', 'pending')->where('role_id', 4)->count(),
             'total_patients' => Patient::count(),
             'today_appointments' => Appointment::whereDate('scheduled_at', today())->count(),
-            'pending_appointments' => Appointment::where('status', 'pending')->count(),
+            'pending_appointments' => $pendingAppointmentsQuery->count(),
             'total_healthcard_patients' => \App\Models\HealthCard::distinct('patient_id')->count('patient_id'),
         ];
+        
+        // Override total_patients for category-specific admins
+        if ($user->role_id === 2 && $user->admin_category && $user->admin_category !== AdminCategoryEnum::MedicalRecords) {
+            $categoryMap = match ($user->admin_category) {
+                AdminCategoryEnum::HealthCard => 'health_card',
+                AdminCategoryEnum::HIV => 'hiv_testing',
+                AdminCategoryEnum::Pregnancy => 'pregnancy_care',
+                default => null,
+            };
+            
+            if ($categoryMap) {
+                // Count distinct patients who have appointments in this category
+                $statistics['total_patients'] = Patient::whereHas('appointments.service', function ($q) use ($categoryMap) {
+                    $q->where('category', $categoryMap);
+                })->distinct()->count('id');
+            }
+        }
 
         // Appointment trends based on admin category
         $appointmentTrends = null;
