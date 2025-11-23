@@ -18,6 +18,10 @@ class NotificationBell extends Component
 
     public $showDropdown = false;
 
+    public $showModal = false;
+
+    public $selectedAppointment = null;
+
     public function mount(?string $notificationRoute = null): void
     {
         if ($notificationRoute !== null) {
@@ -58,6 +62,41 @@ class NotificationBell extends Component
 
         $this->loadNotifications();
         $this->dispatch('notifications-cleared');
+    }
+
+    public function viewNotification($notificationId): void
+    {
+        $notification = \App\Models\Notification::find($notificationId);
+        
+        if (!$notification) {
+            return;
+        }
+
+        // Mark as read when viewing
+        if (!$notification->isRead()) {
+            $this->markAsRead($notificationId);
+        }
+
+        // Get appointment ID from notification data
+        $appointmentId = $notification->data['appointment_id'] ?? null;
+        
+        if ($appointmentId) {
+            $this->selectedAppointment = \App\Models\Appointment::with([
+                'patient.user',
+                'patient.barangay',
+                'doctor.user',
+                'service'
+            ])->find($appointmentId);
+            
+            $this->showModal = true;
+            $this->showDropdown = false;
+        }
+    }
+
+    public function closeModal(): void
+    {
+        $this->showModal = false;
+        $this->selectedAppointment = null;
     }
 
     public function render(): ViewContract
