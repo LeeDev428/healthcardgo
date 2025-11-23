@@ -17,7 +17,6 @@ return new class extends Migration
             $table->string('card_number')->unique();
             $table->date('issue_date');
             $table->date('expiry_date');
-            $table->string('qr_code')->nullable();
             $table->enum('status', ['active', 'expired', 'suspended', 'revoked'])->default('active');
             $table->json('medical_data')->nullable();
             $table->timestamp('last_renewed_at')->nullable();
