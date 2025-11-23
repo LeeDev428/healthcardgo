@@ -90,6 +90,28 @@
                 </div>
             </div>
 
+            <!-- Total Patients with Health Cards -->
+            <div class="group relative overflow-hidden rounded-xl bg-white p-6 shadow-sm ring-1 ring-zinc-200 transition duration-300 hover:shadow-lg dark:bg-zinc-800 dark:ring-zinc-700">
+                <div class="absolute right-0 top-0 h-24 w-24 translate-x-8 -translate-y-8 rounded-full bg-indigo-500/10"></div>
+                <div class="relative flex items-start justify-between">
+                    <div class="flex-1">
+                        <div class="flex items-center gap-3">
+                            <div class="flex h-12 w-12 items-center justify-center rounded-lg bg-linear-to-br from-indigo-400 to-indigo-600 shadow-lg shadow-indigo-500/30">
+                                <svg class="h-6 w-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V8a2 2 0 00-2-2h-5m-4 0V5a2 2 0 114 0v1m-4 0a2 2 0 104 0m-5 8a2 2 0 100-4 2 2 0 000 4zm0 0c1.306 0 2.417.835 2.83 2M9 14a3.001 3.001 0 00-2.83 2M15 11h3m-3 4h2" />
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="mt-4">
+                            <flux:text class="text-sm font-medium text-zinc-600 dark:text-zinc-400">Total Patients with Health Cards</flux:text>
+                            <div class="mt-2 flex items-baseline gap-2">
+                                <flux:heading size="2xl" class="font-bold text-zinc-900 dark:text-white">{{ number_format($statistics['total_healthcard_patients']) }}</flux:heading>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <!-- Pending Appointments -->
             <div class="group relative overflow-hidden rounded-xl bg-white p-6 shadow-sm ring-1 ring-zinc-200 transition duration-300 hover:shadow-lg dark:bg-zinc-800 dark:ring-zinc-700">
                 <div class="absolute right-0 top-0 h-24 w-24 translate-x-8 -translate-y-8 rounded-full bg-purple-500/10"></div>
@@ -313,6 +335,115 @@
                             </flux:text>
                         </div>
                     </div>
+                </div>
+            </div>
+        @endif
+
+        <!-- Recent Health Card Patients Table (for healthcard admins only) -->
+        @if ($recentHealthCardPatients && $recentHealthCardPatients->count() > 0)
+            <div class="rounded-xl bg-white shadow-sm ring-1 ring-zinc-200 dark:bg-zinc-800 dark:ring-zinc-700">
+                <div class="border-b border-zinc-200 p-6 dark:border-zinc-700">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <flux:heading size="lg" class="flex items-center gap-2">
+                                <svg class="h-6 w-6 text-indigo-600 dark:text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V8a2 2 0 00-2-2h-5m-4 0V5a2 2 0 114 0v1m-4 0a2 2 0 104 0m-5 8a2 2 0 100-4 2 2 0 000 4zm0 0c1.306 0 2.417.835 2.83 2M9 14a3.001 3.001 0 00-2.83 2M15 11h3m-3 4h2" />
+                                </svg>
+                                <span>Recent Health Card Patients</span>
+                                <flux:badge size="lg">{{ $recentHealthCardPatients->count() }}</flux:badge>
+                            </flux:heading>
+                            <flux:text class="mt-1 text-sm text-zinc-500 dark:text-zinc-400">Most recent patients who availed health cards</flux:text>
+                        </div>
+                        <a href="{{ route('healthcare_admin.health-cards') }}" class="group flex items-center gap-1 text-sm font-medium text-blue-600 transition-colors hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300">
+                            View All
+                            <svg class="h-4 w-4 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-zinc-200 dark:divide-zinc-700">
+                        <thead class="bg-zinc-50 dark:bg-zinc-900/50">
+                            <tr>
+                                <th scope="col" class="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider text-zinc-600 dark:text-zinc-400">Patient</th>
+                                <th scope="col" class="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider text-zinc-600 dark:text-zinc-400">Card Number</th>
+                                <th scope="col" class="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider text-zinc-600 dark:text-zinc-400">Barangay</th>
+                                <th scope="col" class="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider text-zinc-600 dark:text-zinc-400">Issue Date</th>
+                                <th scope="col" class="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider text-zinc-600 dark:text-zinc-400">Expiry Date</th>
+                                <th scope="col" class="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider text-zinc-600 dark:text-zinc-400">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-zinc-200 bg-white dark:divide-zinc-700 dark:bg-zinc-800">
+                            @foreach ($recentHealthCardPatients as $healthCard)
+                                <tr class="transition-colors duration-150 hover:bg-zinc-50 dark:hover:bg-zinc-700/50">
+                                    <td class="whitespace-nowrap px-6 py-4">
+                                        <div class="flex items-center gap-3">
+                                            <div class="flex h-10 w-10 items-center justify-center rounded-full bg-linear-to-br from-indigo-400 to-indigo-600 text-sm font-semibold text-white shadow-md">
+                                                {{ $healthCard->patient->user->initials() }}
+                                            </div>
+                                            <div>
+                                                <flux:text class="font-semibold text-zinc-900 dark:text-white">{{ $healthCard->patient->user->name }}</flux:text>
+                                                <flux:text class="text-xs text-zinc-500 dark:text-zinc-400">Patient #{{ $healthCard->patient->patient_number }}</flux:text>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="whitespace-nowrap px-6 py-4">
+                                        <div class="flex items-center gap-2">
+                                            <svg class="h-4 w-4 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 20l4-16m2 16l4-16M6 9h14M4 15h14" />
+                                            </svg>
+                                            <flux:text class="font-mono font-medium text-zinc-900 dark:text-white">{{ $healthCard->card_number }}</flux:text>
+                                        </div>
+                                    </td>
+                                    <td class="whitespace-nowrap px-6 py-4">
+                                        <flux:text class="text-zinc-900 dark:text-white">{{ $healthCard->patient->barangay->name ?? 'N/A' }}</flux:text>
+                                    </td>
+                                    <td class="whitespace-nowrap px-6 py-4">
+                                        <div class="flex items-center gap-2">
+                                            <svg class="h-4 w-4 text-zinc-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                            </svg>
+                                            <flux:text class="text-zinc-900 dark:text-white">{{ $healthCard->issue_date->format('M d, Y') }}</flux:text>
+                                        </div>
+                                    </td>
+                                    <td class="whitespace-nowrap px-6 py-4">
+                                        <div class="flex items-center gap-2">
+                                            <svg class="h-4 w-4 text-zinc-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                            </svg>
+                                            <flux:text class="text-zinc-900 dark:text-white">{{ $healthCard->expiry_date->format('M d, Y') }}</flux:text>
+                                        </div>
+                                    </td>
+                                    <td class="whitespace-nowrap px-6 py-4">
+                                        @if ($healthCard->status === 'active')
+                                            <flux:badge color="green" icon="check-circle">
+                                                Active
+                                            </flux:badge>
+                                        @elseif ($healthCard->status === 'expired')
+                                            <flux:badge color="red">
+                                                <svg class="h-3 w-3" fill="currentColor" viewBox="0 0 20 20">
+                                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
+                                                </svg>
+                                                Expired
+                                            </flux:badge>
+                                        @elseif ($healthCard->status === 'suspended')
+                                            <flux:badge color="yellow">
+                                                <svg class="h-3 w-3" fill="currentColor" viewBox="0 0 20 20">
+                                                    <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+                                                </svg>
+                                                Suspended
+                                            </flux:badge>
+                                        @else
+                                            <flux:badge class="bg-zinc-100 text-zinc-800 dark:bg-zinc-700 dark:text-zinc-300">
+                                                {{ ucfirst($healthCard->status) }}
+                                            </flux:badge>
+                                        @endif
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
                 </div>
             </div>
         @endif
