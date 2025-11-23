@@ -53,7 +53,6 @@ class BookAppointment extends Component
         $this->services = Service::active()->get();
         $this->currentMonth = Carbon::now()->month;
         $this->currentYear = Carbon::now()->year;
-        $this->generateCalendar();
     }
 
     public function nextStep()
@@ -326,6 +325,9 @@ class BookAppointment extends Component
             ]);
 
             session()->flash('success', 'Appointment booked successfully! Your appointment number is: '.$appointment->appointment_number.'. Queue number: '.$appointment->queue_number.'. A healthcare provider will be assigned by our admin team.');
+
+            // Refresh the calendar to show updated slots
+            $this->generateCalendar();
 
             return redirect()->route('patient.dashboard');
         } catch (\Exception $e) {
