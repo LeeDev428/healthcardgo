@@ -57,8 +57,8 @@ class PatientList extends Component
         $query = Patient::query();
 
         // Filter by category if healthcare admin has a specific category
-        if ($adminCategory && $adminCategory !== 'medical_records') {
-            $categoryMap = match ($adminCategory) {
+        if ($adminCategory && $adminCategory->value !== 'medical_records') {
+            $categoryMap = match ($adminCategory->value) {
                 'healthcard' => 'health_card',
                 'hiv' => 'hiv_testing',
                 'pregnancy' => 'pregnancy_care',
@@ -66,12 +66,8 @@ class PatientList extends Component
             };
 
             if ($categoryMap) {
-                // Filter patients who have appointments in this category or health cards for healthcard admin
-                if ($adminCategory === 'healthcard') {
-                    $query->has('healthCards');
-                } else {
-                    $query->whereHas('appointments.service', fn ($q) => $q->where('category', $categoryMap));
-                }
+                // Filter patients who have appointments in this category
+                $query->whereHas('appointments.service', fn ($q) => $q->where('category', $categoryMap));
             }
         }
 
@@ -92,8 +88,8 @@ class PatientList extends Component
             ->orderBy('created_at', 'desc');
 
         // Filter by admin category
-        if ($adminCategory && $adminCategory !== 'medical_records') {
-            $categoryMap = match ($adminCategory) {
+        if ($adminCategory && $adminCategory->value !== 'medical_records') {
+            $categoryMap = match ($adminCategory->value) {
                 'healthcard' => 'health_card',
                 'hiv' => 'hiv_testing',
                 'pregnancy' => 'pregnancy_care',
@@ -101,11 +97,8 @@ class PatientList extends Component
             };
 
             if ($categoryMap) {
-                if ($adminCategory === 'healthcard') {
-                    $patientsQuery->has('healthCards');
-                } else {
-                    $patientsQuery->whereHas('appointments.service', fn ($q) => $q->where('category', $categoryMap));
-                }
+                // Filter patients who have appointments in this category
+                $patientsQuery->whereHas('appointments.service', fn ($q) => $q->where('category', $categoryMap));
             }
         }
 
