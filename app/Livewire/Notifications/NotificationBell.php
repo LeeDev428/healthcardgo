@@ -11,16 +11,8 @@ use Livewire\Component;
 class NotificationBell extends Component
 {
     public string $notificationRoute = 'notifications.index';
-
     public $unreadCount = 0;
-
     public $recentNotifications = [];
-
-    public $showDropdown = false;
-
-    public $showModal = false;
-
-    public $selectedAppointment = null;
 
     public function mount(?string $notificationRoute = null): void
     {
@@ -36,21 +28,16 @@ class NotificationBell extends Component
     public function loadNotifications(): void
     {
         $notificationService = app(NotificationService::class);
-        $this->unreadCount = $notificationService->getUnreadCount(Auth::id());
-        $this->recentNotifications = $notificationService->getRecentNotifications(Auth::id(), 5);
-    }
-
-    public function toggleDropdown(): void
-    {
-        $this->showDropdown = ! $this->showDropdown;
+        $userId = Auth::id();
+        
+        $this->unreadCount = $notificationService->getUnreadCount($userId);
+        $this->recentNotifications = $notificationService->getRecentNotifications($userId, 10);
     }
 
     public function markAsRead($notificationId): void
     {
-        $id = (int) $notificationId;
         $notificationService = app(NotificationService::class);
-        $notificationService->markAsRead($id);
-
+        $notificationService->markAsRead((int) $notificationId);
         $this->loadNotifications();
         $this->dispatch('notification-read');
     }
@@ -59,7 +46,6 @@ class NotificationBell extends Component
     {
         $notificationService = app(NotificationService::class);
         $notificationService->markAllAsRead((int) Auth::id());
-
         $this->loadNotifications();
         $this->dispatch('notifications-cleared');
     }
@@ -72,31 +58,17 @@ class NotificationBell extends Component
             return;
         }
 
-        // Mark as read when viewing
         if (!$notification->isRead()) {
             $this->markAsRead($notificationId);
         }
 
-        // Get appointment ID from notification data
+        // Redirect to notification page or appointment details
         $appointmentId = $notification->data['appointment_id'] ?? null;
-        
         if ($appointmentId) {
-            $this->selectedAppointment = \App\Models\Appointment::with([
-                'patient.user',
-                'patient.barangay',
-                'doctor.user',
-                'service'
-            ])->find($appointmentId);
-            
-            $this->showModal = true;
-            $this->showDropdown = false;
+            $this->redirect(route($this->notificationRoute));
+        } else {
+            $this->redirect(route($this->notificationRoute));
         }
-    }
-
-    public function closeModal(): void
-    {
-        $this->showModal = false;
-        $this->selectedAppointment = null;
     }
 
     public function render(): ViewContract
