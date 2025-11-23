@@ -165,7 +165,7 @@
             x-transition:leave="transition ease-in duration-200"
             x-transition:leave-start="opacity-100"
             x-transition:leave-end="opacity-0"
-            class="fixed inset-0 flex items-center justify-center bg-black/50 px-4 py-8"
+            class="fixed inset-0 flex items-center justify-center bg-black/50 px-4 py-12"
             style="z-index: 9999 !important; display: none;"
             x-cloak>
             
@@ -278,8 +278,27 @@
                                 </div>
                             </div>
 
+                            <!-- Schedule Information -->
+                            <div class="bg-zinc-50 dark:bg-zinc-900/50 rounded p-2">
+                                <flux:heading size="xs" class="mb-1.5 flex items-center">
+                                    <flux:icon name="calendar" size="xs" class="mr-1.5" />
+                                    Schedule
+                                </flux:heading>
+                                <div class="space-y-1">
+                                    <div>
+                                        <flux:text size="xs" class="text-zinc-500 dark:text-zinc-400">Date & Time</flux:text>
+                                        <flux:text size="sm" weight="semibold">{{ $selectedAppointment->scheduled_at->format('M d, Y g:i A') }}</flux:text>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <!-- Right Column -->
+                        <div class="space-y-2">
+                            
                             <!-- Service Information -->
-                            <div class="bg-zinc-50 dark:bg-zinc-900/50 rounded-lg p-2.5">
+                            <div class="bg-zinc-50 dark:bg-zinc-900/50 rounded p-2">
                                 <flux:heading size="xs" class="mb-1.5 flex items-center">
                                     <flux:icon name="clipboard-document-list" size="xs" class="mr-1.5" />
                                     Service Details
@@ -307,29 +326,10 @@
                                     @endif
                                 </div>
                             </div>
-
-                            <!-- Schedule Information -->
-                            <div class="bg-zinc-50 dark:bg-zinc-900/50 rounded-lg p-2.5">
-                                <flux:heading size="xs" class="mb-1.5 flex items-center">
-                                    <flux:icon name="calendar" size="xs" class="mr-1.5" />
-                                    Schedule
-                                </flux:heading>
-                                <div class="space-y-1">
-                                    <div>
-                                        <flux:text size="xs" class="text-zinc-500 dark:text-zinc-400">Date & Time</flux:text>
-                                        <flux:text size="sm" weight="semibold">{{ $selectedAppointment->scheduled_at->format('M d, Y g:i A') }}</flux:text>
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div>
-
-                        <!-- Right Column -->
-                        <div class="space-y-2">
                             
                             <!-- Doctor/Provider Information -->
                             @if($selectedAppointment->doctor)
-                                <div class="bg-zinc-50 dark:bg-zinc-900/50 rounded-lg p-2.5">
+                                <div class="bg-zinc-50 dark:bg-zinc-900/50 rounded p-2">
                                     <flux:heading size="xs" class="mb-1.5 flex items-center">
                                         <flux:icon name="user-circle" size="xs" class="mr-1.5" />
                                         Healthcare Provider
@@ -342,7 +342,7 @@
                                     </div>
                                 </div>
                             @else
-                                <div class="bg-yellow-50 dark:bg-yellow-900/20 rounded-lg p-2.5 border border-yellow-200 dark:border-yellow-800">
+                                <div class="bg-yellow-50 dark:bg-yellow-900/20 rounded p-2 border border-yellow-200 dark:border-yellow-800">
                                     <div class="flex items-start gap-2">
                                         <flux:icon name="exclamation-circle" class="text-yellow-600 dark:text-yellow-400 mt-0.5" size="xs" />
                                         <div>
@@ -358,7 +358,7 @@
                             @endif
 
                             <!-- Fee Information -->
-                            <div class="bg-zinc-50 dark:bg-zinc-900/50 rounded-lg p-2.5">
+                            <div class="bg-zinc-50 dark:bg-zinc-900/50 rounded p-2">
                                 <flux:heading size="xs" class="mb-1.5 flex items-center">
                                     <flux:icon name="currency-dollar" size="xs" class="mr-1.5" />
                                     Payment
@@ -375,7 +375,7 @@
 
                             <!-- Notes Section -->
                             @if($selectedAppointment->notes)
-                                <div class="bg-zinc-50 dark:bg-zinc-900/50 rounded-lg p-2.5">
+                                <div class="bg-zinc-50 dark:bg-zinc-900/50 rounded p-2">
                                     <flux:heading size="xs" class="mb-1.5 flex items-center">
                                         <flux:icon name="document-text" size="xs" class="mr-1.5" />
                                         Notes
