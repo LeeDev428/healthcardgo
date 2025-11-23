@@ -40,6 +40,8 @@
             :current="request()->routeIs('admin.barangays')" wire:navigate>Barangays</flux:navlist.item>
           <flux:navlist.item icon="user-group" :href="route('admin.users')"
             :current="request()->routeIs('admin.users')" wire:navigate>Users</flux:navlist.item>
+          <flux:navlist.item icon="megaphone" :href="route('admin.announcements')"
+            :current="request()->routeIs('admin.announcements')" wire:navigate>Announcements</flux:navlist.item>
         @endif
 
         @if (auth()->user()->hasAnyRole(['healthcare_admin']))
