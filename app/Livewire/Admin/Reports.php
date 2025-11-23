@@ -40,7 +40,7 @@ class Reports extends Component
         $filters = [
             'from' => $this->from,
             'to' => $this->to,
-            'status' => $this->status,
+            'status' => $this->type === 'appointments' ? null : $this->status,
             'doctor_id' => $this->doctor_id,
             'service_category' => $this->service_category,
             'disease_type' => $this->disease_type,
