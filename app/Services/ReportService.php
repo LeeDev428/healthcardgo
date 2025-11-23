@@ -24,7 +24,7 @@ class ReportService
         $to = isset($filters['to']) && $filters['to'] ? Carbon::parse($filters['to'])->endOfDay() : now()->endOfDay();
 
         $query = Appointment::query()
-            ->with(['patient.user', 'doctor.user', 'service'])
+            ->with(['patient.user', 'patient.barangay', 'doctor.user', 'service'])
             ->whereBetween('scheduled_at', [$from, $to]);
 
         // Restrict healthcare admins to their category when applicable
@@ -34,8 +34,10 @@ class ReportService
             $query->where('status', $filters['status']);
         }
 
-        if (! empty($filters['doctor_id'])) {
-            $query->where('doctor_id', (int) $filters['doctor_id']);
+        if (! empty($filters['barangay_id'])) {
+            $query->whereHas('patient', function (Builder $q) use ($filters) {
+                $q->where('barangay_id', (int) $filters['barangay_id']);
+            });
         }
 
         if (! empty($filters['service_category'])) {
@@ -287,7 +289,7 @@ class ReportService
                 'scheduled_at' => optional($a->scheduled_at)?->toDateTimeString(),
                 'status' => $a->status,
                 'patient' => $a->patient?->user?->name ?? 'N/A',
-                'doctor' => $a->doctor?->user?->name ?? 'Unassigned',
+                'barangay' => $a->patient?->barangay?->name ?? 'N/A',
                 'service' => $a->service?->name ?? 'N/A',
                 'service_category' => $a->service?->category ?? null,
             ];
