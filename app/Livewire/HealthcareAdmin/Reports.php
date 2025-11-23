@@ -32,13 +32,18 @@ class Reports extends Component
         $this->from = now()->startOfMonth()->toDateString();
         $this->to = now()->toDateString();
 
-        // Don't prefill service_category to avoid over-filtering; rely on backend scoping
+        // Set default service_category based on admin category
         $adminCategory = Auth::user()?->admin_category;
-        $this->service_category = null;
         if ($adminCategory === AdminCategoryEnum::HIV) {
+            $this->service_category = 'hiv_testing';
             $this->disease_type = 'hiv';
         } elseif ($adminCategory === AdminCategoryEnum::Pregnancy) {
+            $this->service_category = 'pregnancy_care';
             $this->disease_type = 'pregnancy_complications';
+        } elseif ($adminCategory === AdminCategoryEnum::HealthCard) {
+            $this->service_category = 'health_card';
+        } else {
+            $this->service_category = null;
         }
     }
 
