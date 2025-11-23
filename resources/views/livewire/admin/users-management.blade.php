@@ -27,7 +27,7 @@
         @endif
 
         <!-- Statistics Cards -->
-        <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
             <div class="rounded-lg bg-white p-6 shadow dark:bg-zinc-800">
                 <div class="flex items-center">
                     <div class="shrink-0 rounded-md bg-blue-500 p-3">
@@ -108,7 +108,7 @@
                 </div>
             </div>
 
-            <div class="rounded-lg bg-white p-6 shadow dark:bg-zinc-800">
+            {{-- <div class="rounded-lg bg-white p-6 shadow dark:bg-zinc-800">
                 <div class="flex items-center">
                     <div class="shrink-0 rounded-md bg-indigo-500 p-3">
                         <svg class="h-6 w-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -122,7 +122,7 @@
                         </dl>
                     </div>
                 </div>
-            </div>
+            </div> --}}
 
             <div class="rounded-lg bg-white p-6 shadow dark:bg-zinc-800">
                 <div class="flex items-center">
