@@ -9,7 +9,7 @@
             <flux:button wire:click="openCreateModal" variant="primary" icon="plus" color="blue">
                 Generate New Health Card
             </flux:button>
-            <flux:button variant="primary" icon="plus" color="cyan" href="{{ route('admin.health-card-history') }}">
+            <flux:button variant="primary" icon="plus" color="cyan" href="{{ auth()->user()->role->name === 'healthcare_admin' ? route('healthcare_admin.health-card-history') : route('admin.health-card-history') }}">
                 Manage Historical Data
             </flux:button>
         </div>
