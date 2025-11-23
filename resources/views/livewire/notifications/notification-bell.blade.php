@@ -175,11 +175,11 @@
                 x-transition:leave="transition ease-in duration-200"
                 x-transition:leave-start="opacity-100 scale-100"
                 x-transition:leave-end="opacity-0 scale-95"
-                class="bg-white dark:bg-zinc-800 rounded-xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto"
+                class="bg-white dark:bg-zinc-800 rounded-xl shadow-2xl w-[95vw] max-w-7xl h-[85vh] flex flex-col"
                 @click.stop>
                 
                 <!-- Modal Header -->
-                <div class="sticky top-0 bg-white dark:bg-zinc-800 border-b border-zinc-200 dark:border-zinc-700 px-6 py-4 flex items-center justify-between z-10">
+                <div class="bg-white dark:bg-zinc-800 border-b border-zinc-200 dark:border-zinc-700 px-6 py-4 flex items-center justify-between flex-shrink-0">
                     <div>
                         <flux:heading size="lg">Appointment Details</flux:heading>
                         <flux:text size="sm" class="text-zinc-600 dark:text-zinc-400 mt-1">
@@ -194,7 +194,7 @@
                 </div>
 
                 <!-- Modal Body -->
-                <div class="px-6 py-6 space-y-6">
+                <div class="px-6 py-4 overflow-y-auto flex-1">
                     
                     <!-- Status Badge -->
                     <div class="flex items-center justify-between">
