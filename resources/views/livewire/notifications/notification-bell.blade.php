@@ -376,28 +376,30 @@
                             </div>
 
                         </div>
-                    </div>
 
-                    <!-- Notes Section -->
-                    @if($selectedAppointment->notes)
-                        <div class="bg-zinc-50 dark:bg-zinc-900/50 rounded-lg p-4">
-                            <flux:heading size="sm" class="mb-2 flex items-center">
-                                <flux:icon name="document-text" size="sm" class="mr-2" />
-                                Additional Notes
-                            </flux:heading>
-                            <flux:text size="sm" class="text-zinc-700 dark:text-zinc-300">
-                                {{ $selectedAppointment->notes }}
-                            </flux:text>
-                        </div>
-                    @endif
+                        <!-- Third Column - Notes & Timeline -->
+                        <div class="space-y-4">
 
-                    <!-- Timeline/Status History -->
-                    <div class="bg-zinc-50 dark:bg-zinc-900/50 rounded-lg p-4">
-                        <flux:heading size="sm" class="mb-3 flex items-center">
-                            <flux:icon name="clock" size="sm" class="mr-2" />
-                            Timeline
-                        </flux:heading>
-                        <div class="space-y-3">
+                            <!-- Notes Section -->
+                            @if($selectedAppointment->notes)
+                                <div class="bg-zinc-50 dark:bg-zinc-900/50 rounded-lg p-3">
+                                    <flux:heading size="sm" class="mb-2 flex items-center">
+                                        <flux:icon name="document-text" size="sm" class="mr-2" />
+                                        Additional Notes
+                                    </flux:heading>
+                                    <flux:text size="sm" class="text-zinc-700 dark:text-zinc-300">
+                                        {{ $selectedAppointment->notes }}
+                                    </flux:text>
+                                </div>
+                            @endif
+
+                            <!-- Timeline/Status History -->
+                            <div class="bg-zinc-50 dark:bg-zinc-900/50 rounded-lg p-3">
+                                <flux:heading size="sm" class="mb-2 flex items-center">
+                                    <flux:icon name="clock" size="sm" class="mr-2" />
+                                    Timeline
+                                </flux:heading>
+                                <div class="space-y-2">
                             <div class="flex items-start gap-3">
                                 <div class="w-2 h-2 rounded-full bg-blue-600 mt-2"></div>
                                 <div class="flex-1">
@@ -461,7 +463,7 @@
                 </div>
 
                 <!-- Modal Footer -->
-                <div class="sticky bottom-0 bg-white dark:bg-zinc-800 border-t border-zinc-200 dark:border-zinc-700 px-6 py-4 flex justify-end gap-3">
+                <div class="bg-white dark:bg-zinc-800 border-t border-zinc-200 dark:border-zinc-700 px-6 py-3 flex justify-end gap-3 flex-shrink-0">
                     <flux:button wire:click="closeModal" variant="ghost">
                         Close
                     </flux:button>
