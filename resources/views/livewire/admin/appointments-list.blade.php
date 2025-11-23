@@ -160,8 +160,8 @@
               </td>
               <td class="px-6 py-4">
                 <div>
-                  <flux:text size="sm" weight="semibold">{{ $appointment->patient->user->name }}</flux:text>
-                  <flux:text size="xs" class="text-zinc-500 dark:text-zinc-500">{{ $appointment->patient->user->email }}</flux:text>
+                  <flux:text size="sm" weight="semibold">{{ $appointment->patient->user->name ?? $appointment->patient->full_name }}</flux:text>
+                  <flux:text size="xs" class="text-zinc-500 dark:text-zinc-500">{{ $appointment->patient->user->email ?? $appointment->patient->contact_number }}</flux:text>
                 </div>
               </td>
               <td class="px-6 py-4">
@@ -275,15 +275,15 @@
           <div class="grid grid-cols-2 gap-3">
             <div>
               <flux:text size="sm" class="text-zinc-600 dark:text-zinc-400">Name</flux:text>
-              <flux:text weight="semibold">{{ $selectedAppointment->patient->user->name }}</flux:text>
+              <flux:text weight="semibold">{{ $selectedAppointment->patient->user->name ?? $selectedAppointment->patient->full_name }}</flux:text>
             </div>
             <div>
               <flux:text size="sm" class="text-zinc-600 dark:text-zinc-400">Email</flux:text>
-              <flux:text weight="semibold">{{ $selectedAppointment->patient->user->email }}</flux:text>
+              <flux:text weight="semibold">{{ $selectedAppointment->patient->user->email ?? 'N/A' }}</flux:text>
             </div>
             <div>
               <flux:text size="sm" class="text-zinc-600 dark:text-zinc-400">Contact</flux:text>
-              <flux:text weight="semibold">{{ $selectedAppointment->patient->contact_number }}</flux:text>
+              <flux:text weight="semibold">{{ $selectedAppointment->patient->contact_number ?? $selectedAppointment->patient->user->contact_number ?? 'N/A' }}</flux:text>
             </div>
             <div>
               <flux:text size="sm" class="text-zinc-600 dark:text-zinc-400">Barangay</flux:text>
