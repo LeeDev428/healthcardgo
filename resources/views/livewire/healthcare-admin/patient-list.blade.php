@@ -9,11 +9,9 @@
                 View {{ $adminCategory ? $adminCategory->label() : 'all' }} patients
             </p>
         </div>
-        @if ($adminCategory === \App\Enums\AdminCategoryEnum::MedicalRecords)
-            <flux:button icon="user-plus" variant="primary" color="cyan" href="{{ route('healthcare_admin.patients.register') }}">
-                Register Patient
-            </flux:button>
-        @endif
+        <flux:button icon="user-plus" variant="primary" color="cyan" href="{{ route('healthcare_admin.patients.register') }}">
+            Register Walk-in Patient
+        </flux:button>
     </div>
 
     {{-- Statistics Cards --}}
