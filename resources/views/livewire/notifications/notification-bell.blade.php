@@ -223,10 +223,10 @@
                     </div>
 
                     <!-- Two Column Layout -->
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
                         
                         <!-- Left Column -->
-                        <div class="space-y-6">
+                        <div class="space-y-4">
                             
                             <!-- Patient Information -->
                             <div class="bg-zinc-50 dark:bg-zinc-900/50 rounded-lg p-4">
