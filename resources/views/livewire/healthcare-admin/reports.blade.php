@@ -17,6 +17,7 @@
                 'service_category' => $this->service_category,
                 'disease_type' => $this->disease_type,
                 'barangay_id' => $this->barangay_id,
+                'health_card_purpose' => $this->health_card_purpose,
             ]) }}" target="_blank"
         >
             <flux:icon name="printer" class="size-5" />
@@ -80,6 +81,14 @@
                 @foreach($serviceCategories as $key => $label)
                     <option value="{{ $key }}">{{ $label }}</option>
                 @endforeach
+            </flux:select>
+        </div>
+        <div class="flex flex-col gap-1" x-show="$wire.type === 'appointments' && '{{ $adminCategory }}' === 'Health Card'">
+            <flux:label class="text-sm text-gray-600">Health Card Purpose</flux:label>
+            <flux:select wire:model.live="health_card_purpose">
+                <option value="">All Purposes</option>
+                <option value="food">Food Handler</option>
+                <option value="non_food">Non-Food Handler</option>
             </flux:select>
         </div>
         <div class="flex flex-col gap-1" x-show="$wire.type === 'diseases'">
