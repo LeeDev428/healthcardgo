@@ -43,7 +43,7 @@
                         label="Documentation"
                     />
                 </flux:tooltip> --}}
-                <livewire:notifications.notification-bell notificationRoute='patient.notifications' />
+                <livewire:notifications.notification-bell :notificationRoute="'patient.notifications'" />
 
                 <flux:tooltip :content="__('Theme')" position="bottom">
                     <flux:dropdown x-data align="end">
