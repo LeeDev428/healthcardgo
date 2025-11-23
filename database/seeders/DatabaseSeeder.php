@@ -40,15 +40,21 @@ class DatabaseSeeder extends Seeder
             'approved_at' => now(),
         ]);
 
-        $patient = User::factory()->create([
+        $patientUser = User::factory()->create([
             'name' => 'Test Patient',
             'email' => 'patient@test.com',
             'role_id' => 4,
             'password' => bcrypt('qwerty123'),
-            'status' => 'pending', // Patients start as pending
+            'status' => 'active', // Set to active for testing
+            'approved_at' => now(),
         ]);
 
-        // Create 50 patients for disease seeding
+        // Create Patient profile for test user
+        Patient::factory()->create([
+            'user_id' => $patientUser->id,
+        ]);
+
+        // Create 50 additional patients for disease seeding
         Patient::factory()->count(50)->create();
 
         // Seed historical disease data and current diseases
