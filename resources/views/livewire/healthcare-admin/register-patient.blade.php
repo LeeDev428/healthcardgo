@@ -147,21 +147,42 @@
                 </div>
             </div>
 
-            <!-- Disease Information (required for walk-ins) -->
+            <!-- Service & Disease Information -->
             <div>
-                <h3 class="text-lg font-semibold text-zinc-900 dark:text-white mb-4">Disease Information</h3>
+                <h3 class="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
+                    @if(!$create_user_account)
+                        Service Information
+                    @else
+                        Disease Information (Optional)
+                    @endif
+                </h3>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <flux:field>
-                        <flux:label>Disease Type <span class="text-zinc-500 text-xs">(Required for walk-in)</span></flux:label>
-                        <flux:select wire:model="disease_type">
-                            <option value="">Select Disease</option>
-                            <option value="rabies">Rabies</option>
-                            <option value="malaria">Malaria</option>
-                            <option value="dengue">Dengue</option>
-                            <option value="measles">Measles</option>
-                        </flux:select>
-                        <flux:error name="disease_type" />
-                    </flux:field>
+                    @if(!$create_user_account)
+                        <flux:field>
+                            <flux:label>Service <span class="text-red-500">*</span></flux:label>
+                            <flux:select wire:model="service_id">
+                                <option value="">Select Service</option>
+                                @foreach($services as $service)
+                                    <option value="{{ $service->id }}">{{ $service->name }}</option>
+                                @endforeach
+                            </flux:select>
+                            <flux:error name="service_id" />
+                        </flux:field>
+                    @endif
+                    
+                    @if($create_user_account || $adminCategory?->value === 'medical_records')
+                        <flux:field>
+                            <flux:label>Disease Type @if(!$create_user_account)<span class="text-zinc-500 text-xs">(Optional)</span>@endif</flux:label>
+                            <flux:select wire:model="disease_type">
+                                <option value="">Select Disease</option>
+                                <option value="rabies">Rabies</option>
+                                <option value="malaria">Malaria</option>
+                                <option value="dengue">Dengue</option>
+                                <option value="measles">Measles</option>
+                            </flux:select>
+                            <flux:error name="disease_type" />
+                        </flux:field>
+                    @endif
                 </div>
             </div>
 
