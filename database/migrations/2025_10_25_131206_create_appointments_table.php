@@ -21,7 +21,7 @@ return new class extends Migration
             $table->dateTime('check_in_at')->nullable();
             $table->dateTime('started_at')->nullable();
             $table->dateTime('completed_at')->nullable();
-            $table->string('status')->default('pending');
+            $table->enum('status', ['pending', 'confirmed', 'checked_in', 'in_progress', 'completed', 'cancelled', 'no_show'])->default('pending');
             $table->text('notes')->nullable();
             $table->text('cancellation_reason')->nullable();
             $table->json('reminder_sent')->nullable(); // Track when reminders were sent
