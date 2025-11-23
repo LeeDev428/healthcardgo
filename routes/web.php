@@ -104,9 +104,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('reports/print', [ReportController::class, 'healthcarePrint'])->name('reports.print');
         Route::get('appointments', AppointmentManagement::class)->name('appointments');
         Route::get('patients', PatientList::class)->name('patients');
-        Route::get('patients/register', RegisterPatient::class)
-            ->middleware('medical-records-admin')
-            ->name('patients.register');
+        Route::get('patients/register', RegisterPatient::class)->name('patients.register');
         Route::get('approvals', PendingApprovals::class)->name('approvals');
         Route::get('health-cards', ManageHealthCards::class)->name('health-cards');
         Route::get('health-cards/{healthCard}/download-pdf', [HealthCardController::class, 'downloadPdf'])->name('health-cards.download-pdf');
