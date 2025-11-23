@@ -38,8 +38,10 @@
               :current="request()->routeIs('admin.services')" wire:navigate>Services</flux:navlist.item>
           <flux:navlist.item icon="map-pin" :href="route('admin.barangays')"
             :current="request()->routeIs('admin.barangays')" wire:navigate>Barangays</flux:navlist.item>
-          <flux:navlist.item icon="user-group" :href="route('admin.users')"
+            <flux:navlist.item icon="user-group" :href="route('admin.users')"
             :current="request()->routeIs('admin.users')" wire:navigate>Users</flux:navlist.item>
+          <flux:navlist.item icon="megaphone" :href="route('admin.announcements')"
+            :current="request()->routeIs('admin.announcements')" wire:navigate>Announcements</flux:navlist.item>
         @endif
 
         @if (auth()->user()->hasAnyRole(['healthcare_admin']))
@@ -52,9 +54,9 @@
             :current="request()->routeIs('healthcare_admin.patients')" wire:navigate>Patients</flux:navlist.item>
           <flux:navlist.item icon="document-text" :href="route('healthcare_admin.reports')"
             :current="request()->routeIs('healthcare_admin.reports')" wire:navigate>Reports</flux:navlist.item>
-        @endif
-
-        {{-- @if (auth()->user()->hasAnyRole(['patient']))
+          <flux:navlist.item icon="megaphone" :href="route('healthcare_admin.announcements')"
+            :current="request()->routeIs('healthcare_admin.announcements')" wire:navigate>Announcements</flux:navlist.item>
+        @endif        {{-- @if (auth()->user()->hasAnyRole(['patient']))
           <flux:navlist.item icon="calendar-days" :href="route('patient.appointments.list')"
             :current="request()->routeIs('patient.appointments.*')" wire:navigate>My Appointments</flux:navlist.item>
           <flux:navlist.item icon="calendar" :href="route('patient.book-appointment')"
