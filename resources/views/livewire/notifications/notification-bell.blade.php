@@ -229,12 +229,12 @@
                         <div class="space-y-4">
                             
                             <!-- Patient Information -->
-                            <div class="bg-zinc-50 dark:bg-zinc-900/50 rounded-lg p-4">
-                                <flux:heading size="sm" class="mb-3 flex items-center">
+                            <div class="bg-zinc-50 dark:bg-zinc-900/50 rounded-lg p-3">
+                                <flux:heading size="sm" class="mb-2 flex items-center">
                                     <flux:icon name="user" size="sm" class="mr-2" />
                                     Patient Information
                                 </flux:heading>
-                                <div class="space-y-2">
+                                <div class="space-y-1.5">
                                     <div>
                                         <flux:text size="xs" class="text-zinc-500 dark:text-zinc-400">Name</flux:text>
                                         <flux:text size="sm" weight="semibold">{{ $selectedAppointment->patient->user->name }}</flux:text>
