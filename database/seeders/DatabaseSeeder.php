@@ -27,8 +27,6 @@ class DatabaseSeeder extends Seeder
             'email' => 'admin@test.com',
             'role_id' => 1,
             'password' => bcrypt('qwerty123'),
-            'two_factor_secret' => null,
-            'two_factor_recovery_codes' => null,
             'status' => 'active',
             'approved_at' => now(),
         ]);
@@ -38,8 +36,6 @@ class DatabaseSeeder extends Seeder
             'email' => 'doctor@test.com',
             'role_id' => 3,
             'password' => bcrypt('qwerty123'),
-            'two_factor_secret' => null,
-            'two_factor_recovery_codes' => null,
             'status' => 'active',
             'approved_at' => now(),
         ]);
@@ -49,8 +45,6 @@ class DatabaseSeeder extends Seeder
             'email' => 'patient@test.com',
             'role_id' => 4,
             'password' => bcrypt('qwerty123'),
-            'two_factor_secret' => null,
-            'two_factor_recovery_codes' => null,
             'status' => 'pending', // Patients start as pending
         ]);
 
