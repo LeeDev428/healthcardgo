@@ -227,15 +227,15 @@
                     <div class="grid grid-cols-1 lg:grid-cols-2 gap-3">
                         
                         <!-- Left Column -->
-                        <div class="space-y-4">
+                        <div class="space-y-3">
                             
                             <!-- Patient Information -->
-                            <div class="bg-zinc-50 dark:bg-zinc-900/50 rounded-lg p-3">
-                                <flux:heading size="sm" class="mb-2 flex items-center">
-                                    <flux:icon name="user" size="sm" class="mr-2" />
+                            <div class="bg-zinc-50 dark:bg-zinc-900/50 rounded-lg p-2.5">
+                                <flux:heading size="xs" class="mb-1.5 flex items-center">
+                                    <flux:icon name="user" size="xs" class="mr-1.5" />
                                     Patient Information
                                 </flux:heading>
-                                <div class="space-y-1.5">
+                                <div class="space-y-1">
                                     <div>
                                         <flux:text size="xs" class="text-zinc-500 dark:text-zinc-400">Name</flux:text>
                                         <flux:text size="sm" weight="semibold">{{ $selectedAppointment->patient->user->name }}</flux:text>
@@ -243,64 +243,54 @@
                                     @if($selectedAppointment->patient->patient_number)
                                         <div>
                                             <flux:text size="xs" class="text-zinc-500 dark:text-zinc-400">Patient Number</flux:text>
-                                            <flux:text size="sm">{{ $selectedAppointment->patient->patient_number }}</flux:text>
+                                            <flux:text size="xs">{{ $selectedAppointment->patient->patient_number }}</flux:text>
                                         </div>
                                     @endif
                                     @if($selectedAppointment->patient->barangay)
                                         <div>
                                             <flux:text size="xs" class="text-zinc-500 dark:text-zinc-400">Barangay</flux:text>
-                                            <flux:text size="sm">{{ $selectedAppointment->patient->barangay->name }}</flux:text>
-                                        </div>
-                                    @endif
-                                    @if($selectedAppointment->patient->date_of_birth)
-                                        <div>
-                                            <flux:text size="xs" class="text-zinc-500 dark:text-zinc-400">Age</flux:text>
-                                            <flux:text size="sm">{{ $selectedAppointment->patient->date_of_birth->age }} years old</flux:text>
-                                        </div>
-                                    @endif
-                                    @if($selectedAppointment->patient->blood_type)
-                                        <div>
-                                            <flux:text size="xs" class="text-zinc-500 dark:text-zinc-400">Blood Type</flux:text>
-                                            <flux:text size="sm">{{ $selectedAppointment->patient->blood_type }}</flux:text>
+                                            <flux:text size="xs">{{ $selectedAppointment->patient->barangay->name }}</flux:text>
                                         </div>
                                     @endif
                                 </div>
                             </div>
 
                             <!-- Service Information -->
-                            <div class="bg-zinc-50 dark:bg-zinc-900/50 rounded-lg p-3">
-                                <flux:heading size="sm" class="mb-2 flex items-center">
-                                    <flux:icon name="clipboard-document-list" size="sm" class="mr-2" />
+                            <div class="bg-zinc-50 dark:bg-zinc-900/50 rounded-lg p-2.5">
+                                <flux:heading size="xs" class="mb-1.5 flex items-center">
+                                    <flux:icon name="clipboard-document-list" size="xs" class="mr-1.5" />
                                     Service Details
                                 </flux:heading>
-                                <div class="space-y-1.5">
+                                <div class="space-y-1">
                                     <div>
                                         <flux:text size="xs" class="text-zinc-500 dark:text-zinc-400">Service</flux:text>
                                         <flux:text size="sm" weight="semibold">{{ $selectedAppointment->service->name }}</flux:text>
                                     </div>
-                                    @if($selectedAppointment->service->description)
-                                        <div>
-                                            <flux:text size="xs" class="text-zinc-500 dark:text-zinc-400">Description</flux:text>
-                                            <flux:text size="sm">{{ $selectedAppointment->service->description }}</flux:text>
-                                        </div>
-                                    @endif
                                     <div>
                                         <flux:text size="xs" class="text-zinc-500 dark:text-zinc-400">Duration</flux:text>
-                                        <flux:text size="sm">{{ $selectedAppointment->service->duration_minutes }} minutes</flux:text>
+                                        <flux:text size="xs">{{ $selectedAppointment->service->duration_minutes }} minutes</flux:text>
                                     </div>
-                                    @if($selectedAppointment->health_card_purpose)
-                                        <div>
-                                            <flux:text size="xs" class="text-zinc-500 dark:text-zinc-400">Health Card Purpose</flux:text>
-                                            <flux:text size="sm">{{ ucfirst(str_replace('_', ' ', $selectedAppointment->health_card_purpose)) }} Handler</flux:text>
-                                        </div>
-                                    @endif
+                                </div>
+                            </div>
+
+                            <!-- Schedule Information -->
+                            <div class="bg-zinc-50 dark:bg-zinc-900/50 rounded-lg p-2.5">
+                                <flux:heading size="xs" class="mb-1.5 flex items-center">
+                                    <flux:icon name="calendar" size="xs" class="mr-1.5" />
+                                    Schedule
+                                </flux:heading>
+                                <div class="space-y-1">
+                                    <div>
+                                        <flux:text size="xs" class="text-zinc-500 dark:text-zinc-400">Date & Time</flux:text>
+                                        <flux:text size="sm" weight="semibold">{{ $selectedAppointment->scheduled_at->format('M d, Y g:i A') }}</flux:text>
+                                    </div>
                                 </div>
                             </div>
 
                         </div>
 
                         <!-- Right Column -->
-                        <div class="space-y-4">
+                        <div class="space-y-3">
                             
                             <!-- Schedule Information -->
                             <div class="bg-zinc-50 dark:bg-zinc-900/50 rounded-lg p-3">
