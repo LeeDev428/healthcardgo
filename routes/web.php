@@ -4,6 +4,7 @@ use App\Http\Controllers\AppointmentController;
 use App\Http\Controllers\HealthCardController;
 use App\Http\Controllers\ReportController;
 use App\Livewire\Admin\AdminDashboard;
+use App\Livewire\Admin\Announcements\Index as AnnouncementsIndex;
 use App\Livewire\Admin\AppointmentsList;
 use App\Livewire\Admin\BarangayManagement;
 use App\Livewire\Admin\DiseaseSurveillance;
@@ -18,10 +19,6 @@ use App\Livewire\Admin\ScanHealthCard;
 use App\Livewire\Admin\ServicesManagement;
 use App\Livewire\Admin\UsersManagement;
 use App\Livewire\Auth\PatientRegister;
-use App\Livewire\Doctor\AppointmentsList as DoctorAppointmentsList;
-use App\Livewire\Doctor\CreateMedicalRecord;
-use App\Livewire\Doctor\DoctorDashboard;
-use App\Livewire\Doctor\PatientsList as DoctorPatientsList;
 use App\Livewire\HealthcareAdmin\AppointmentManagement;
 use App\Livewire\HealthcareAdmin\HealthcareAdminDashboard;
 use App\Livewire\HealthcareAdmin\PatientList;
@@ -72,7 +69,6 @@ Route::middleware(['auth'])->group(function () {
         return match ($user->role_id) {
             1 => redirect()->route('admin.dashboard'),
             2 => redirect()->route('healthcare_admin.dashboard'),
-            3 => redirect()->route('doctor.dashboard'),
             4 => redirect()->route('patient.dashboard'),
             default => redirect()->route('home'),
         };
@@ -97,6 +93,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('feedback', ManageFeedback::class)->name('feedback');
         Route::get('disease-surveillance', DiseaseSurveillance::class)->name('disease-surveillance');
         Route::get('historical-data', ManageHistoricalData::class)->name('historical-data');
+        Route::get('announcements', AnnouncementsIndex::class)->name('announcements');
     });
 
     // Healthcare Admin Routes (can also approve patients)
@@ -111,17 +108,7 @@ Route::middleware(['auth'])->group(function () {
             ->name('patients.register');
         Route::get('approvals', PendingApprovals::class)->name('approvals');
         Route::get('health-cards', ManageHealthCards::class)->name('health-cards');
-    });
-
-    // Doctor Routes
-    Route::prefix('doctor')->middleware(['role:doctor'])->name('doctor.')->group(function () {
-        Route::get('dashboard', DoctorDashboard::class)->name('dashboard');
-        Route::get('appointments', DoctorAppointmentsList::class)->name('appointments.list');
-        Route::get('medical-records/create/{appointmentId?}', CreateMedicalRecord::class)->name('medical-records.create');
-        Route::get('patients', DoctorPatientsList::class)->name('patients');
-        Route::get('patients/{patientId}/records', function () {
-            return 'Patient records page - to be implemented';
-        })->name('patients.records');
+        Route::get('announcements', AnnouncementsIndex::class)->name('announcements');
     });
 
     // Notifications
