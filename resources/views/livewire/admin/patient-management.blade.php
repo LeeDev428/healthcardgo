@@ -136,9 +136,9 @@
                   <flux:button wire:click="viewDetails({{ $patient->id }})" variant="ghost" size="sm">
                     <flux:icon name="eye" />
                   </flux:button>
-                  <flux:button wire:click="editPatient({{ $patient->id }})" variant="ghost" size="sm">
+                  {{-- <flux:button wire:click="editPatient({{ $patient->id }})" variant="ghost" size="sm">
                     <flux:icon name="pencil" />
-                  </flux:button>
+                  </flux:button> --}}
                   @if($patient->user->status === 'approved')
                     <flux:button wire:click="deactivatePatient({{ $patient->id }})" variant="ghost" size="sm">
                       <flux:icon name="x-circle" />
