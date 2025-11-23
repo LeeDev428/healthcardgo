@@ -212,18 +212,30 @@ class NotificationService
     {
         // Get all super admins
         $admins = User::where('role_id', 1)->get();
+        $patient = $appointment->patient;
 
         foreach ($admins as $admin) {
             $this->createNotification(
                 $admin->id,
                 'new_appointment',
                 'New Appointment Booked',
-                "A new appointment has been booked by {$appointment->patient->fullName} for ".$appointment->scheduled_at->format('M d, Y \a\t g:i A'),
+                "A new appointment has been booked by {$patient->fullName} for {$appointment->service->name}",
                 [
                     'appointment_id' => $appointment->id,
                     'appointment_number' => $appointment->appointment_number,
-                    'patient_id' => $appointment->patient_id,
-                    'patient_name' => $appointment->patient->fullName,
+                    'patient_id' => $patient->id,
+                    'patient_name' => $patient->fullName,
+                    'patient_number' => $patient->patient_number,
+                    'patient_age' => $patient->age,
+                    'patient_gender' => $patient->gender,
+                    'patient_blood_type' => $patient->blood_type,
+                    'patient_barangay' => $patient->barangay->name ?? 'N/A',
+                    'service_name' => $appointment->service->name,
+                    'service_description' => $appointment->service->description,
+                    'service_duration' => $appointment->service->duration_minutes,
+                    'service_price' => $appointment->fee ?? 0,
+                    'appointment_date' => $appointment->scheduled_at->format('M d, Y g:i A'),
+                    'notes' => $appointment->notes,
                 ]
             );
         }
@@ -380,19 +392,30 @@ class NotificationService
         }
 
         $admins = $this->getHealthcareAdminsForService($appointment->service);
+        $patient = $appointment->patient;
 
         foreach ($admins as $admin) {
             $this->createNotification(
                 $admin->id,
                 'admin_new_appointment',
-                'New Appointment in Your Category',
-                "A new appointment was booked by {$appointment->patient->fullName} for ".$appointment->scheduled_at->format('M d, Y \a\t g:i A'),
+                'New Appointment Booked',
+                "A new appointment has been booked by {$patient->fullName} for {$appointment->service->name}",
                 [
                     'appointment_id' => $appointment->id,
                     'appointment_number' => $appointment->appointment_number,
-                    'patient_id' => $appointment->patient_id,
-                    'patient_name' => $appointment->patient->fullName,
-                    'service' => $appointment->service->name,
+                    'patient_id' => $patient->id,
+                    'patient_name' => $patient->fullName,
+                    'patient_number' => $patient->patient_number,
+                    'patient_age' => $patient->age,
+                    'patient_gender' => $patient->gender,
+                    'patient_blood_type' => $patient->blood_type,
+                    'patient_barangay' => $patient->barangay->name ?? 'N/A',
+                    'service_name' => $appointment->service->name,
+                    'service_description' => $appointment->service->description,
+                    'service_duration' => $appointment->service->duration_minutes,
+                    'service_price' => $appointment->fee ?? 0,
+                    'appointment_date' => $appointment->scheduled_at->format('M d, Y g:i A'),
+                    'notes' => $appointment->notes,
                 ]
             );
         }
