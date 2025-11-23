@@ -109,6 +109,10 @@ Route::middleware(['auth'])->group(function () {
             ->name('patients.register');
         Route::get('approvals', PendingApprovals::class)->name('approvals');
         Route::get('health-cards', ManageHealthCards::class)->name('health-cards');
+        Route::get('health-cards/{healthCard}/download-pdf', [HealthCardController::class, 'downloadPdf'])->name('health-cards.download-pdf');
+        Route::get('health-cards/{healthCard}/download-png', [HealthCardController::class, 'downloadPng'])->name('health-cards.download-png');
+        Route::get('health-card-history', ManageHealthCardHistory::class)->name('health-card-history');
+        Route::get('historical-data', ManageHistoricalData::class)->name('historical-data');
     });
 
     // Notifications
