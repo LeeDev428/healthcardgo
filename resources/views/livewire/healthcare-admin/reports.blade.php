@@ -14,7 +14,6 @@
                 'from' => $this->from,
                 'to' => $this->to,
                 'status' => $this->status,
-                'doctor_id' => $this->doctor_id,
                 'service_category' => $this->service_category,
                 'disease_type' => $this->disease_type,
                 'barangay_id' => $this->barangay_id,
@@ -122,7 +121,7 @@
                         <th class="px-4 py-2 text-left text-sm font-medium text-gray-600">Scheduled</th>
                         <th class="px-4 py-2 text-left text-sm font-medium text-gray-600">Status</th>
                         <th class="px-4 py-2 text-left text-sm font-medium text-gray-600">Patient</th>
-                        <th class="px-4 py-2 text-left text-sm font-medium text-gray-600">Doctor</th>
+                        <th class="px-4 py-2 text-left text-sm font-medium text-gray-600">Barangay</th>
                         <th class="px-4 py-2 text-left text-sm font-medium text-gray-600">Service</th>
                     @elseif($this->type === 'diseases')
                         <th class="px-4 py-2 text-left text-sm font-medium text-gray-600">Type</th>
@@ -147,7 +146,7 @@
                             <td class="px-4 py-2">{{ $row['scheduled_at'] }}</td>
                             <td class="px-4 py-2">{{ ucfirst(str_replace('_',' ', $row['status'])) }}</td>
                             <td class="px-4 py-2">{{ $row['patient'] }}</td>
-                            <td class="px-4 py-2">{{ $row['doctor'] }}</td>
+                            <td class="px-4 py-2">{{ $row['barangay'] ?? 'N/A' }}</td>
                             <td class="px-4 py-2">{{ $row['service'] }}</td>
                         @elseif($this->type === 'diseases')
                             <td class="px-4 py-2">{{ $row['disease_type'] }}</td>
