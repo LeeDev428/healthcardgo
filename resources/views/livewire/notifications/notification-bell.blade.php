@@ -197,7 +197,7 @@
                 <div class="px-6 py-4 overflow-y-auto flex-1">
                     
                     <!-- Status Badge -->
-                    <div class="flex items-center justify-between">
+                    <div class="flex items-center justify-between mb-4">
                         <div>
                             @php
                                 $statusColors = [
