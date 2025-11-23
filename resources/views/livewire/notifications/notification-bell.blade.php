@@ -292,58 +292,30 @@
                         <!-- Right Column -->
                         <div class="space-y-3">
                             
-                            <!-- Schedule Information -->
-                            <div class="bg-zinc-50 dark:bg-zinc-900/50 rounded-lg p-3">
-                                <flux:heading size="sm" class="mb-2 flex items-center">
-                                    <flux:icon name="calendar" size="sm" class="mr-2" />
-                                    Schedule
-                                </flux:heading>
-                                <div class="space-y-1.5">
-                                    <div>
-                                        <flux:text size="xs" class="text-zinc-500 dark:text-zinc-400">Date</flux:text>
-                                        <flux:text size="sm" weight="semibold">{{ $selectedAppointment->scheduled_at->format('F d, Y') }}</flux:text>
-                                    </div>
-                                    <div>
-                                        <flux:text size="xs" class="text-zinc-500 dark:text-zinc-400">Time</flux:text>
-                                        <flux:text size="sm" weight="semibold">{{ $selectedAppointment->scheduled_at->format('g:i A') }}</flux:text>
-                                    </div>
-                                    <div>
-                                        <flux:text size="xs" class="text-zinc-500 dark:text-zinc-400">Created</flux:text>
-                                        <flux:text size="sm">{{ $selectedAppointment->created_at->format('M d, Y g:i A') }}</flux:text>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Doctor Information -->
+                            <!-- Doctor/Provider Information -->
                             @if($selectedAppointment->doctor)
-                                <div class="bg-zinc-50 dark:bg-zinc-900/50 rounded-lg p-3">
-                                    <flux:heading size="sm" class="mb-2 flex items-center">
-                                        <flux:icon name="user-circle" size="sm" class="mr-2" />
+                                <div class="bg-zinc-50 dark:bg-zinc-900/50 rounded-lg p-2.5">
+                                    <flux:heading size="xs" class="mb-1.5 flex items-center">
+                                        <flux:icon name="user-circle" size="xs" class="mr-1.5" />
                                         Healthcare Provider
                                     </flux:heading>
-                                    <div class="space-y-1.5">
+                                    <div class="space-y-1">
                                         <div>
                                             <flux:text size="xs" class="text-zinc-500 dark:text-zinc-400">Doctor</flux:text>
                                             <flux:text size="sm" weight="semibold">Dr. {{ $selectedAppointment->doctor->user->name }}</flux:text>
                                         </div>
-                                        @if($selectedAppointment->doctor->specialization)
-                                            <div>
-                                                <flux:text size="xs" class="text-zinc-500 dark:text-zinc-400">Specialization</flux:text>
-                                                <flux:text size="sm">{{ $selectedAppointment->doctor->specialization }}</flux:text>
-                                            </div>
-                                        @endif
                                     </div>
                                 </div>
                             @else
-                                <div class="bg-yellow-50 dark:bg-yellow-900/20 rounded-lg p-3 border border-yellow-200 dark:border-yellow-800">
-                                    <div class="flex items-start gap-3">
-                                        <flux:icon name="exclamation-circle" class="text-yellow-600 dark:text-yellow-400 mt-0.5" size="sm" />
+                                <div class="bg-yellow-50 dark:bg-yellow-900/20 rounded-lg p-2.5 border border-yellow-200 dark:border-yellow-800">
+                                    <div class="flex items-start gap-2">
+                                        <flux:icon name="exclamation-circle" class="text-yellow-600 dark:text-yellow-400 mt-0.5" size="xs" />
                                         <div>
-                                            <flux:text size="sm" weight="semibold" class="text-yellow-800 dark:text-yellow-300">
+                                            <flux:text size="xs" weight="semibold" class="text-yellow-800 dark:text-yellow-300">
                                                 Provider Not Assigned
                                             </flux:text>
                                             <flux:text size="xs" class="text-yellow-700 dark:text-yellow-400">
-                                                A healthcare provider will be assigned by the admin team
+                                                Will be assigned by admin
                                             </flux:text>
                                         </div>
                                     </div>
@@ -351,110 +323,42 @@
                             @endif
 
                             <!-- Fee Information -->
-                            <div class="bg-zinc-50 dark:bg-zinc-900/50 rounded-lg p-3">
-                                <flux:heading size="sm" class="mb-2 flex items-center">
-                                    <flux:icon name="currency-dollar" size="sm" class="mr-2" />
+                            <div class="bg-zinc-50 dark:bg-zinc-900/50 rounded-lg p-2.5">
+                                <flux:heading size="xs" class="mb-1.5 flex items-center">
+                                    <flux:icon name="currency-dollar" size="xs" class="mr-1.5" />
                                     Payment
                                 </flux:heading>
                                 <div class="flex items-baseline">
-                                    <flux:text size="2xl" weight="bold" class="text-green-600 dark:text-green-400">
+                                    <flux:text size="lg" weight="bold" class="text-green-600 dark:text-green-400">
                                         ₱{{ number_format($selectedAppointment->fee, 2) }}
                                     </flux:text>
                                     @if($selectedAppointment->fee == 0)
-                                        <flux:text size="sm" class="ml-2 text-zinc-500">Free Service</flux:text>
+                                        <flux:text size="xs" class="ml-2 text-zinc-500">Free</flux:text>
                                     @endif
                                 </div>
                             </div>
 
-                        </div>
-
-                        <!-- Third Column - Notes & Timeline -->
-                        <div class="space-y-4">
-
                             <!-- Notes Section -->
                             @if($selectedAppointment->notes)
-                                <div class="bg-zinc-50 dark:bg-zinc-900/50 rounded-lg p-3">
-                                    <flux:heading size="sm" class="mb-2 flex items-center">
-                                        <flux:icon name="document-text" size="sm" class="mr-2" />
-                                        Additional Notes
+                                <div class="bg-zinc-50 dark:bg-zinc-900/50 rounded-lg p-2.5">
+                                    <flux:heading size="xs" class="mb-1.5 flex items-center">
+                                        <flux:icon name="document-text" size="xs" class="mr-1.5" />
+                                        Notes
                                     </flux:heading>
-                                    <flux:text size="sm" class="text-zinc-700 dark:text-zinc-300">
+                                    <flux:text size="xs" class="text-zinc-700 dark:text-zinc-300">
                                         {{ $selectedAppointment->notes }}
                                     </flux:text>
                                 </div>
                             @endif
 
-                            <!-- Timeline/Status History -->
-                            <div class="bg-zinc-50 dark:bg-zinc-900/50 rounded-lg p-3">
-                                <flux:heading size="sm" class="mb-2 flex items-center">
-                                    <flux:icon name="clock" size="sm" class="mr-2" />
-                                    Timeline
-                                </flux:heading>
-                                <div class="space-y-2">
-                            <div class="flex items-start gap-3">
-                                <div class="w-2 h-2 rounded-full bg-blue-600 mt-2"></div>
-                                <div class="flex-1">
-                                    <flux:text size="sm" weight="semibold">Appointment Created</flux:text>
-                                    <flux:text size="xs" class="text-zinc-500">{{ $selectedAppointment->created_at->format('M d, Y g:i A') }}</flux:text>
-                                </div>
-                            </div>
-                            @if($selectedAppointment->status === 'confirmed' || $selectedAppointment->status === 'checked_in' || $selectedAppointment->status === 'in_progress' || $selectedAppointment->status === 'completed')
-                                <div class="flex items-start gap-3">
-                                    <div class="w-2 h-2 rounded-full bg-green-600 mt-2"></div>
-                                    <div class="flex-1">
-                                        <flux:text size="sm" weight="semibold">Confirmed</flux:text>
-                                        <flux:text size="xs" class="text-zinc-500">Appointment confirmed by admin</flux:text>
-                                    </div>
-                                </div>
-                            @endif
-                            @if($selectedAppointment->check_in_at)
-                                <div class="flex items-start gap-3">
-                                    <div class="w-2 h-2 rounded-full bg-purple-600 mt-2"></div>
-                                    <div class="flex-1">
-                                        <flux:text size="sm" weight="semibold">Patient Checked In</flux:text>
-                                        <flux:text size="xs" class="text-zinc-500">{{ $selectedAppointment->check_in_at->format('M d, Y g:i A') }}</flux:text>
-                                    </div>
-                                </div>
-                            @endif
-                            @if($selectedAppointment->started_at)
-                                <div class="flex items-start gap-3">
-                                    <div class="w-2 h-2 rounded-full bg-indigo-600 mt-2"></div>
-                                    <div class="flex-1">
-                                        <flux:text size="sm" weight="semibold">Consultation Started</flux:text>
-                                        <flux:text size="xs" class="text-zinc-500">{{ $selectedAppointment->started_at->format('M d, Y g:i A') }}</flux:text>
-                                    </div>
-                                </div>
-                            @endif
-                            @if($selectedAppointment->completed_at)
-                                <div class="flex items-start gap-3">
-                                    <div class="w-2 h-2 rounded-full bg-green-600 mt-2"></div>
-                                    <div class="flex-1">
-                                        <flux:text size="sm" weight="semibold">Completed</flux:text>
-                                        <flux:text size="xs" class="text-zinc-500">{{ $selectedAppointment->completed_at->format('M d, Y g:i A') }}</flux:text>
-                                    </div>
-                                </div>
-                            @endif
-                            @if($selectedAppointment->cancelled_at)
-                                <div class="flex items-start gap-3">
-                                    <div class="w-2 h-2 rounded-full bg-red-600 mt-2"></div>
-                                    <div class="flex-1">
-                                        <flux:text size="sm" weight="semibold">Cancelled</flux:text>
-                                        <flux:text size="xs" class="text-zinc-500">{{ $selectedAppointment->cancelled_at->format('M d, Y g:i A') }}</flux:text>
-                                        @if($selectedAppointment->cancellation_reason)
-                                            <flux:text size="xs" class="text-red-600 dark:text-red-400 mt-1">
-                                                Reason: {{ $selectedAppointment->cancellation_reason }}
-                                            </flux:text>
-                                        @endif
-                                    </div>
-                                </div>
-                            @endif
                         </div>
+
                     </div>
 
                 </div>
 
                 <!-- Modal Footer -->
-                <div class="bg-white dark:bg-zinc-800 border-t border-zinc-200 dark:border-zinc-700 px-6 py-3 flex justify-end gap-3 flex-shrink-0">
+                <div class="bg-white dark:bg-zinc-800 border-t border-zinc-200 dark:border-zinc-700 px-4 py-2.5 flex justify-end gap-2 flex-shrink-0">
                     <flux:button wire:click="closeModal" variant="ghost">
                         Close
                     </flux:button>
