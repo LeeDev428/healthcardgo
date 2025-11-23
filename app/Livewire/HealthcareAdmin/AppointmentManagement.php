@@ -230,10 +230,10 @@ class AppointmentManagement extends Component
     {
         return match ($appointment->status) {
             'pending' => ['confirmed', 'cancelled'],
-            'confirmed' => ['checked_in', 'completed', 'cancelled', 'no_show'],
-            'checked_in' => ['in_progress', 'completed', 'cancelled', 'no_show'],
-            'in_progress' => ['completed'],
-            default => [], // completed, cancelled, no_show
+            'confirmed' => ['cancelled', 'no_show'],
+            'checked_in' => ['confirmed', 'cancelled', 'no_show'],
+            'in_progress' => ['confirmed', 'cancelled', 'no_show'],
+            default => ['confirmed', 'cancelled', 'no_show'],
         };
     }
 
