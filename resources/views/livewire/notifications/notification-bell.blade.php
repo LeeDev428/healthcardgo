@@ -165,8 +165,9 @@
             x-transition:leave="transition ease-in duration-200"
             x-transition:leave-start="opacity-100"
             x-transition:leave-end="opacity-0"
-            class="fixed inset-0 z-[9999] flex items-center justify-center bg-black/50 p-4"
-            style="display: none;">
+            class="fixed inset-0 flex items-center justify-center bg-black/50 p-4"
+            style="z-index: 9999 !important; display: none;"
+            x-cloak>
             
             <div
                 x-transition:enter="transition ease-out duration-300"
@@ -175,29 +176,29 @@
                 x-transition:leave="transition ease-in duration-200"
                 x-transition:leave-start="opacity-100 scale-100"
                 x-transition:leave-end="opacity-0 scale-95"
-                class="bg-white dark:bg-zinc-800 rounded-xl shadow-2xl w-[95vw] max-w-7xl h-[85vh] flex flex-col"
+                class="bg-white dark:bg-zinc-800 rounded-xl shadow-2xl w-[90vw] max-w-5xl max-h-[80vh] flex flex-col"
                 @click.stop>
                 
                 <!-- Modal Header -->
-                <div class="bg-white dark:bg-zinc-800 border-b border-zinc-200 dark:border-zinc-700 px-6 py-4 flex items-center justify-between flex-shrink-0">
+                <div class="bg-white dark:bg-zinc-800 border-b border-zinc-200 dark:border-zinc-700 px-4 py-3 flex items-center justify-between flex-shrink-0">
                     <div>
-                        <flux:heading size="lg">Appointment Details</flux:heading>
-                        <flux:text size="sm" class="text-zinc-600 dark:text-zinc-400 mt-1">
+                        <flux:heading size="base">Appointment Details</flux:heading>
+                        <flux:text size="xs" class="text-zinc-600 dark:text-zinc-400">
                             {{ $selectedAppointment->appointment_number }}
                         </flux:text>
                     </div>
                     <button
                         wire:click="closeModal"
                         class="text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200 transition-colors">
-                        <flux:icon name="x-mark" size="lg" />
+                        <flux:icon name="x-mark" size="md" />
                     </button>
                 </div>
 
                 <!-- Modal Body -->
-                <div class="px-6 py-4 overflow-y-auto flex-1">
+                <div class="px-4 py-3 overflow-y-auto flex-1">
                     
                     <!-- Status Badge -->
-                    <div class="flex items-center justify-between mb-4">
+                    <div class="flex items-center justify-between mb-3">
                         <div>
                             @php
                                 $statusColors = [
@@ -210,20 +211,20 @@
                                 ];
                                 $statusColor = $statusColors[$selectedAppointment->status] ?? 'bg-gray-100 text-gray-800';
                             @endphp
-                            <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium {{ $statusColor }}">
+                            <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium {{ $statusColor }}">
                                 {{ ucfirst(str_replace('_', ' ', $selectedAppointment->status)) }}
                             </span>
                         </div>
                         <div class="text-right">
                             <flux:text size="xs" class="text-zinc-500 dark:text-zinc-400">Queue Number</flux:text>
-                            <flux:text size="2xl" weight="bold" class="text-blue-600 dark:text-blue-400">
+                            <flux:text size="xl" weight="bold" class="text-blue-600 dark:text-blue-400">
                                 #{{ $selectedAppointment->queue_number }}
                             </flux:text>
                         </div>
                     </div>
 
                     <!-- Two Column Layout -->
-                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-3">
                         
                         <!-- Left Column -->
                         <div class="space-y-4">
