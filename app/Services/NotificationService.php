@@ -34,6 +34,26 @@ class NotificationService
     }
 
     /**
+     * Send pending appointment notification to patient
+     */
+    public function sendAppointmentPending(Appointment $appointment): void
+    {
+        $this->createNotification(
+            $appointment->patient->user_id,
+            'appointment_pending',
+            'Appointment Pending Approval',
+            "Your appointment ({$appointment->appointment_number}) for {$appointment->service->name} has been received and is pending approval. You will be notified once confirmed.",
+            [
+                'appointment_id' => $appointment->id,
+                'appointment_number' => $appointment->appointment_number,
+                'scheduled_at' => $appointment->scheduled_at->toIso8601String(),
+                'service' => $appointment->service->name,
+                'queue_number' => $appointment->queue_number,
+            ]
+        );
+    }
+
+    /**
      * Send appointment reminder (e.g., "3 days" before)
      */
     public function sendAppointmentReminder(Appointment $appointment, string $daysBefore = '3 days'): void
@@ -286,35 +306,13 @@ class NotificationService
      */
     protected function createNotification(int $userId, string $type, string $title, string $message, array $data = []): Notification
     {
-        $notification = Notification::create([
+        return Notification::create([
             'user_id' => $userId,
             'type' => $type,
             'title' => $title,
             'message' => $message,
             'data' => $data,
         ]);
-
-        // Also copy this notification to all super admins (role_id = 1)
-        // except when the original recipient is a patient (role_id = 4)
-        // and except when the original recipient is already a super admin.
-        $recipient = User::find($userId);
-        if ($recipient && $recipient->role_id !== 4 && $recipient->role_id !== 1) {
-            $superAdmins = User::where('role_id', 1)->pluck('id');
-            foreach ($superAdmins as $adminId) {
-                if ((int) $adminId === (int) $userId) {
-                    continue;
-                }
-                Notification::create([
-                    'user_id' => (int) $adminId,
-                    'type' => $type,
-                    'title' => $title,
-                    'message' => $message,
-                    'data' => $data,
-                ]);
-            }
-        }
-
-        return $notification;
     }
 
     /**
