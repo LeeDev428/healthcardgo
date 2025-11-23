@@ -10,40 +10,35 @@
 
   <flux:container class="my-10">
     <section class="newsfeed">
-      <article class="newsfeed-card">
-        <i class="ri-megaphone-line newsfeed-icon"></i>
-        <div class="newsfeed-content">
-          <h3 class="newsfeed-title" data-key="announcement1_title">Free Health Seminar This Weekend</h3>
-          <p class="newsfeed-description" data-key="announcement1_description">
-            Join our free health seminar on June 8, 2025, at the City Hall Auditorium. Topics include nutrition,
-            hygiene, and disease prevention. All are welcome!
-          </p>
-          <time class="newsfeed-date" data-key="announcement1_date" datetime="2025-06-04">Posted: June 4, 2025</time>
+      @forelse($announcements as $announcement)
+        <article class="newsfeed-card">
+          <i class="ri-megaphone-line newsfeed-icon"></i>
+          <div class="newsfeed-content">
+            <h3 class="newsfeed-title">{{ $announcement->title }}</h3>
+            <p class="newsfeed-description">
+              {{ $announcement->content }}
+            </p>
+            <time class="newsfeed-date" datetime="{{ $announcement->created_at->format('Y-m-d') }}">
+              Posted: {{ $announcement->created_at->format('F d, Y') }}
+            </time>
+            <p class="text-xs text-zinc-500 dark:text-zinc-400 mt-2">
+              By: {{ $announcement->creator->name }}
+            </p>
+          </div>
+        </article>
+      @empty
+        <div class="text-center py-12">
+          <i class="ri-megaphone-line text-6xl text-zinc-400 mb-4"></i>
+          <h3 class="text-xl font-semibold text-zinc-700 dark:text-zinc-300 mb-2">No Announcements Yet</h3>
+          <p class="text-zinc-600 dark:text-zinc-400">Check back later for updates and news.</p>
         </div>
-      </article>
-      <article class="newsfeed-card">
-        <i class="ri-shield-cross-line newsfeed-icon"></i>
-        <div class="newsfeed-content">
-          <h3 class="newsfeed-title" data-key="announcement2_title">Vaccination Drive Extended</h3>
-          <p class="newsfeed-description" data-key="announcement2_description">
-            Due to high demand, our free vaccination drive has been extended until June 15, 2025. Visit your nearest
-            health center for your shot!
-          </p>
-          <time class="newsfeed-date" data-key="announcement2_date" datetime="2025-06-03">Posted: June 3, 2025</time>
+      @endforelse
+      
+      @if($announcements->hasPages())
+        <div class="mt-6">
+          {{ $announcements->links() }}
         </div>
-      </article>
-      <article class="newsfeed-card">
-        <i class="ri-information-line newsfeed-icon"></i>
-        <div class="newsfeed-content">
-          <h3 class="newsfeed-title" data-key="announcement3_title">New Features on HealthCardGo</h3>
-          <p class="newsfeed-description" data-key="announcement3_description">
-            We have launched new features including appointment booking, digital health records, and a health heat map.
-            Explore them now in your dashboard!
-          </p>
-          <time class="newsfeed-date" data-key="announcement3_date" datetime="2025-06-01">Posted: June 1, 2025</time>
-        </div>
-      </article>
-      <button class="load-more-btn" data-key="load_more_button" onclick="loadMore()">Load More</button>
+      @endif
     </section>
   </flux:container>
 </div>
