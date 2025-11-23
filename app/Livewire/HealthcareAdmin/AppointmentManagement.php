@@ -280,23 +280,27 @@ class AppointmentManagement extends Component
     public function getStatisticsProperty(): array
     {
         $user = Auth::user();
-        $adminCategory = $user->admin_category;
 
         $query = Appointment::query();
 
-        // Filter by category if healthcare admin has a specific category
-        if ($adminCategory && $adminCategory !== AdminCategoryEnum::MedicalRecords) {
-            $categoryMap = match ($adminCategory) {
-                AdminCategoryEnum::HealthCard => 'health_card',
-                AdminCategoryEnum::HIV => 'hiv_testing',
-                AdminCategoryEnum::Pregnancy => 'pregnancy_care',
-                default => null,
-            };
+        // Filter by category if healthcare admin
+        if ($user->role_id === 2) {
+            $adminCategory = $user->admin_category;
+            
+            // Medical Records Admin sees ALL appointments stats
+            if ($adminCategory !== AdminCategoryEnum::MedicalRecords) {
+                $categoryMap = match ($adminCategory) {
+                    AdminCategoryEnum::HealthCard => 'health_card',
+                    AdminCategoryEnum::HIV => 'hiv_testing',
+                    AdminCategoryEnum::Pregnancy => 'pregnancy_care',
+                    default => null,
+                };
 
-            if ($categoryMap) {
-                $query->whereHas('service', function ($q) use ($categoryMap) {
-                    $q->where('category', $categoryMap);
-                });
+                if ($categoryMap) {
+                    $query->whereHas('service', function ($q) use ($categoryMap) {
+                        $q->where('category', $categoryMap);
+                    });
+                }
             }
         }
 
@@ -315,12 +319,13 @@ class AppointmentManagement extends Component
     {
         $user = Auth::user();
         $adminCategory = $user->admin_category;
-
+        
         $appointmentsQuery = Appointment::with(['patient.user', 'service', 'doctor.user'])
             ->orderBy('scheduled_at', 'desc');
 
-        // Filter by admin category
-        if ($adminCategory && $adminCategory !== AdminCategoryEnum::MedicalRecords) {
+        // ONLY filter if NOT Medical Records Admin
+        // Medical Records sees ALL, others see their category only
+        if ($user->role_id === 2 && $adminCategory && $adminCategory !== AdminCategoryEnum::MedicalRecords) {
             $categoryMap = match ($adminCategory) {
                 AdminCategoryEnum::HealthCard => 'health_card',
                 AdminCategoryEnum::HIV => 'hiv_testing',
