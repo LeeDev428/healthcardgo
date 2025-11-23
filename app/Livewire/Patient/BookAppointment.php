@@ -212,6 +212,7 @@ class BookAppointment extends Component
             $this->currentYear = $maxDate->year;
         }
 
+        $this->calendarDates = []; // Clear cached data
         $this->generateCalendar();
         $this->clearSelectedDateTime();
     }
@@ -234,6 +235,7 @@ class BookAppointment extends Component
             $this->currentYear = $minDate->year;
         }
 
+        $this->calendarDates = []; // Clear cached data
         $this->generateCalendar();
         $this->clearSelectedDateTime();
     }
@@ -267,6 +269,7 @@ class BookAppointment extends Component
     public function updatedSelectedService(): void
     {
         // When service changes, refresh calendar availability and clear date/time selection
+        $this->calendarDates = []; // Clear old data
         $this->generateCalendar();
         $this->clearSelectedDateTime();
     }
@@ -325,9 +328,6 @@ class BookAppointment extends Component
             ]);
 
             session()->flash('success', 'Appointment booked successfully! Your appointment number is: '.$appointment->appointment_number.'. Queue number: '.$appointment->queue_number.'. A healthcare provider will be assigned by our admin team.');
-
-            // Refresh the calendar to show updated slots
-            $this->generateCalendar();
 
             return redirect()->route('patient.dashboard');
         } catch (\Exception $e) {
