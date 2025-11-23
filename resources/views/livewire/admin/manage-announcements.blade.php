@@ -12,7 +12,7 @@
       </div>
 
       <flux:button wire:click="openCreateModal" variant="primary">
-        <flux:icon name="plus" class="h-4 w-4 mr-2" />
+        <flux:icon name="plus" class="h-4 w-4 mr-4" />
         {{ __('New Announcement') }}
       </flux:button>
     </div>
@@ -131,9 +131,8 @@
   </div>
 
   <!-- Create/Edit Modal -->
-  @if ($isModalOpen)
-    <flux:modal name="announcement-modal" class="min-w-[600px]" :open="$isModalOpen">
-      <form wire:submit="save">
+  <flux:modal name="announcement-modal" class="min-w-[600px]" wire:model="isModalOpen">
+    <form wire:submit="save">
         <div class="space-y-6">
           <div>
             <flux:heading size="lg">
@@ -178,5 +177,4 @@
         </div>
       </form>
     </flux:modal>
-  @endif
 </div>
