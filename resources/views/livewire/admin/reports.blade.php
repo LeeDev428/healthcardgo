@@ -61,12 +61,12 @@
             </flux:select>
         </div>
         <div class="flex flex-col gap-1" x-show="$wire.type === 'appointments'">
-            <flux:label class="text-sm text-gray-600">Doctor</flux:label>
-            <flux:select wire:model.live="doctor_id" class="rounded border border-gray-300 px-3 py-2">
-                <flux:select.option value="">All</flux:select.option>
-                @foreach($doctors as $doc)
-                    <flux:select.option value="{{ $doc->id }}">
-                        {{ $doc->name }}
+            <flux:label class="text-sm text-gray-600">Barangay</flux:label>
+            <flux:select wire:model.live="barangay_id" class="rounded border border-gray-300 px-3 py-2">
+                <flux:select.option value="">All Barangays</flux:select.option>
+                @foreach($barangays as $barangay)
+                    <flux:select.option value="{{ $barangay->id }}">
+                        {{ $barangay->name }}
                     </flux:select.option>
                 @endforeach
             </flux:select>
@@ -121,7 +121,7 @@
                         <th class="px-4 py-2 text-left text-sm font-medium text-gray-600">Scheduled</th>
                         <th class="px-4 py-2 text-left text-sm font-medium text-gray-600">Status</th>
                         <th class="px-4 py-2 text-left text-sm font-medium text-gray-600">Patient</th>
-                        <th class="px-4 py-2 text-left text-sm font-medium text-gray-600">Doctor</th>
+                        <th class="px-4 py-2 text-left text-sm font-medium text-gray-600">Barangay</th>
                         <th class="px-4 py-2 text-left text-sm font-medium text-gray-600">Service</th>
                     @elseif($this->type === 'diseases')
                         <th class="px-4 py-2 text-left text-sm font-medium text-gray-600">Type</th>
@@ -146,7 +146,7 @@
                             <td class="px-4 py-2">{{ $row['scheduled_at'] }}</td>
                             <td class="px-4 py-2">{{ ucfirst(str_replace('_',' ', $row['status'])) }}</td>
                             <td class="px-4 py-2">{{ $row['patient'] }}</td>
-                            <td class="px-4 py-2">{{ $row['doctor'] }}</td>
+                            <td class="px-4 py-2">{{ $row['barangay'] ?? 'N/A' }}</td>
                             <td class="px-4 py-2">{{ $row['service'] }}</td>
                         @elseif($this->type === 'diseases')
                             <td class="px-4 py-2">{{ ucfirst($row['disease_type']) }}</td>
