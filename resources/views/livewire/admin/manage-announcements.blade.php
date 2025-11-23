@@ -13,7 +13,7 @@
 
       <flux:button wire:click="openCreateModal" variant="primary">
         <flux:icon name="plus" class="h-4 w-6 mr-4" />
-        {{ __('New Announcement') }}
+        <span class="text-sm">{{ __('New Announcement') }}</span>
       </flux:button>
     </div>
   </div>
