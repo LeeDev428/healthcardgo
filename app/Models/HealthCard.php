@@ -14,7 +14,6 @@ class HealthCard extends Model
         'card_number',
         'issue_date',
         'expiry_date',
-        'qr_code',
         'status',
         'medical_data',
         'last_renewed_at',
