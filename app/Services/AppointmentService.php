@@ -127,20 +127,11 @@ class AppointmentService
             if ($appointment->wasRecentlyCreated) {
                 $appointment->loadMissing(['service', 'patient.user']);
 
-                // Always notify super admins of new appointment
+                // Notify super admins of new appointment
                 $this->notifications->sendNewAppointmentToAdmin($appointment);
 
-                // Auto-confirm all non–health card services so patients bypass manual approval
-                if ($appointment->service && $appointment->service->category !== 'health_card') {
-                    $appointment->status = 'confirmed';
-                    $appointment->save();
-
-                    // For auto-confirmed appointments, send confirmation directly to the patient
-                    $this->notifications->sendAppointmentConfirmation($appointment->fresh());
-                } else {
-                    // Keep existing approval flow for health card–related services (healthcare admins review)
-                    $this->notifications->sendNewAppointmentToHealthcareAdmins($appointment);
-                }
+                // Notify healthcare admins for review and approval
+                $this->notifications->sendNewAppointmentToHealthcareAdmins($appointment);
             }
 
             // Generate the digital copy PDF and QR image assets
