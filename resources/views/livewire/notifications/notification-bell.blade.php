@@ -165,7 +165,7 @@
             x-transition:leave="transition ease-in duration-200"
             x-transition:leave-start="opacity-100"
             x-transition:leave-end="opacity-0"
-            class="fixed inset-0 flex items-center justify-center bg-black/50 p-4"
+            class="fixed inset-0 flex items-center justify-center bg-black/50 px-4 py-8"
             style="z-index: 9999 !important; display: none;"
             x-cloak>
             
@@ -176,61 +176,54 @@
                 x-transition:leave="transition ease-in duration-200"
                 x-transition:leave-start="opacity-100 scale-100"
                 x-transition:leave-end="opacity-0 scale-95"
-                class="bg-white dark:bg-zinc-800 rounded-xl shadow-2xl w-[90vw] max-w-5xl max-h-[80vh] flex flex-col border-4 border-teal-600 dark:border-teal-500"
+                class="bg-white dark:bg-zinc-800 rounded-lg shadow-2xl w-full max-w-4xl max-h-full flex flex-col border-4 border-teal-600 dark:border-teal-500 my-4"
                 @click.stop>
                 
                 <!-- Modal Header -->
-                <div class="bg-white dark:bg-zinc-800 border-b border-zinc-200 dark:border-zinc-700 px-4 py-3 flex items-center justify-between flex-shrink-0">
-                    <div>
-                        <flux:heading size="base">Appointment Details</flux:heading>
-                        <flux:text size="xs" class="text-zinc-600 dark:text-zinc-400">
-                            {{ $selectedAppointment->appointment_number }}
-                        </flux:text>
+                <div class="bg-gradient-to-r from-teal-600 to-cyan-600 text-white px-3 py-2 flex items-center justify-between flex-shrink-0 rounded-t-md">
+                    <div class="flex items-center gap-3">
+                        <div>
+                            <div class="font-semibold text-sm">Appointment Details</div>
+                            <div class="text-xs opacity-90">{{ $selectedAppointment->appointment_number }}</div>
+                        </div>
+                        @php
+                            $statusColors = [
+                                'pending' => 'bg-yellow-500 text-white',
+                                'confirmed' => 'bg-blue-500 text-white',
+                                'checked_in' => 'bg-purple-500 text-white',
+                                'in_progress' => 'bg-indigo-500 text-white',
+                                'completed' => 'bg-green-500 text-white',
+                                'cancelled' => 'bg-red-500 text-white',
+                            ];
+                            $statusColor = $statusColors[$selectedAppointment->status] ?? 'bg-gray-500 text-white';
+                        @endphp
+                        <span class="px-2 py-0.5 rounded-full text-xs font-medium {{ $statusColor }}">
+                            {{ ucfirst(str_replace('_', ' ', $selectedAppointment->status)) }}
+                        </span>
+                        <div class="text-right">
+                            <div class="text-xs opacity-75">Queue #</div>
+                            <div class="text-lg font-bold">{{ $selectedAppointment->queue_number }}</div>
+                        </div>
                     </div>
                     <button
                         wire:click="closeModal"
-                        class="text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200 transition-colors">
-                        <flux:icon name="x-mark" size="md" />
+                        class="text-white hover:text-gray-200 transition-colors">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
                     </button>
                 </div>
 
                 <!-- Modal Body -->
-                <div class="px-4 py-3 overflow-y-auto flex-1">
-                    
-                    <!-- Status Badge -->
-                    <div class="flex items-center justify-between mb-3">
-                        <div>
-                            @php
-                                $statusColors = [
-                                    'pending' => 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400',
-                                    'confirmed' => 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400',
-                                    'checked_in' => 'bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-400',
-                                    'in_progress' => 'bg-indigo-100 text-indigo-800 dark:bg-indigo-900/30 dark:text-indigo-400',
-                                    'completed' => 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400',
-                                    'cancelled' => 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400',
-                                ];
-                                $statusColor = $statusColors[$selectedAppointment->status] ?? 'bg-gray-100 text-gray-800';
-                            @endphp
-                            <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium {{ $statusColor }}">
-                                {{ ucfirst(str_replace('_', ' ', $selectedAppointment->status)) }}
-                            </span>
-                        </div>
-                        <div class="text-right">
-                            <flux:text size="xs" class="text-zinc-500 dark:text-zinc-400">Queue Number</flux:text>
-                            <flux:text size="xl" weight="bold" class="text-blue-600 dark:text-blue-400">
-                                #{{ $selectedAppointment->queue_number }}
-                            </flux:text>
-                        </div>
-                    </div>
-
+                <div class="px-3 py-2 overflow-y-auto flex-1">
                     <!-- Two Column Layout -->
-                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-3">
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-2">
                         
                         <!-- Left Column -->
-                        <div class="space-y-3">
+                        <div class="space-y-2">
                             
                             <!-- Patient Information -->
-                            <div class="bg-zinc-50 dark:bg-zinc-900/50 rounded-lg p-2.5">
+                            <div class="bg-zinc-50 dark:bg-zinc-900/50 rounded p-2">
                                 <flux:heading size="xs" class="mb-1.5 flex items-center">
                                     <flux:icon name="user" size="xs" class="mr-1.5" />
                                     Patient Information
@@ -332,7 +325,7 @@
                         </div>
 
                         <!-- Right Column -->
-                        <div class="space-y-3">
+                        <div class="space-y-2">
                             
                             <!-- Doctor/Provider Information -->
                             @if($selectedAppointment->doctor)
@@ -400,7 +393,7 @@
                 </div>
 
                 <!-- Modal Footer -->
-                <div class="bg-white dark:bg-zinc-800 border-t border-zinc-200 dark:border-zinc-700 px-4 py-2.5 flex justify-end gap-2 flex-shrink-0">
+                <div class="bg-white dark:bg-zinc-800 border-t border-zinc-200 dark:border-zinc-700 px-3 py-2 flex justify-end gap-2 flex-shrink-0 rounded-b-md">
                     <flux:button wire:click="closeModal" variant="ghost">
                         Close
                     </flux:button>
