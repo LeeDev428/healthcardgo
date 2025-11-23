@@ -127,6 +127,9 @@ class AppointmentService
             if ($appointment->wasRecentlyCreated) {
                 $appointment->loadMissing(['service', 'patient.user']);
 
+                // Notify patient that appointment is pending approval
+                $this->notifications->sendAppointmentPending($appointment);
+
                 // Notify super admins of new appointment
                 $this->notifications->sendNewAppointmentToAdmin($appointment);
 
