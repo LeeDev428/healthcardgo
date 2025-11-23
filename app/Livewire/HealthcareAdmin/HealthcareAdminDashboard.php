@@ -167,6 +167,7 @@ class HealthcareAdminDashboard extends Component
             'total_patients' => Patient::count(),
             'today_appointments' => Appointment::whereDate('scheduled_at', today())->count(),
             'pending_appointments' => Appointment::where('status', 'pending')->count(),
+            'total_healthcard_patients' => \App\Models\HealthCard::distinct('patient_id')->count('patient_id'),
         ];
 
         // Appointment trends based on admin category
@@ -243,12 +244,23 @@ class HealthcareAdminDashboard extends Component
             ->take(5)
             ->get();
 
+        // Recent health card patients (for healthcard admins)
+        $recentHealthCardPatients = null;
+        if (in_array(strtolower($adminCategory ?? ''), ['healthcard', 'healthcard admin'])) {
+            $recentHealthCardPatients = \App\Models\HealthCard::with(['patient.user', 'patient.barangay'])
+                ->where('status', 'active')
+                ->latest('created_at')
+                ->take(10)
+                ->get();
+        }
+
         return view('livewire.healthcare-admin.healthcare-admin-dashboard', [
             'statistics' => $statistics,
             'upcomingAppointments' => $upcomingAppointments,
             'pendingPatients' => $pendingPatients,
             'adminCategory' => $adminCategory,
             'appointmentTrends' => $appointmentTrends,
+            'recentHealthCardPatients' => $recentHealthCardPatients,
         ]);
     }
 }
