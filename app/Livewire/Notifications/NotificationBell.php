@@ -13,6 +13,7 @@ class NotificationBell extends Component
     public string $notificationRoute = 'notifications.index';
     public $unreadCount = 0;
     public $recentNotifications = [];
+    public $selectedNotification = null;
 
     public function mount(?string $notificationRoute = null): void
     {
@@ -48,6 +49,15 @@ class NotificationBell extends Component
         $notificationService->markAllAsRead((int) Auth::id());
         $this->loadNotifications();
         $this->dispatch('notifications-cleared');
+    }
+
+    public function selectNotification($notificationId): void
+    {
+        $this->selectedNotification = \App\Models\Notification::find($notificationId);
+        
+        if ($this->selectedNotification && !$this->selectedNotification->isRead()) {
+            $this->markAsRead($notificationId);
+        }
     }
 
     public function viewNotification($notificationId): void
