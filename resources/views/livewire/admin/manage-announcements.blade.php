@@ -132,7 +132,7 @@
 
   <!-- Create/Edit Modal -->
   @if ($isModalOpen)
-    <flux:modal name="announcement-modal" class="min-w-[600px]">
+    <flux:modal name="announcement-modal" class="min-w-[600px]" :open="$isModalOpen">
       <form wire:submit="save">
         <div class="space-y-6">
           <div>
