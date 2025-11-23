@@ -38,10 +38,8 @@
               :current="request()->routeIs('admin.services')" wire:navigate>Services</flux:navlist.item>
           <flux:navlist.item icon="map-pin" :href="route('admin.barangays')"
             :current="request()->routeIs('admin.barangays')" wire:navigate>Barangays</flux:navlist.item>
-            <flux:navlist.item icon="user-group" :href="route('admin.users')"
+          <flux:navlist.item icon="user-group" :href="route('admin.users')"
             :current="request()->routeIs('admin.users')" wire:navigate>Users</flux:navlist.item>
-          <flux:navlist.item icon="megaphone" :href="route('admin.announcements')"
-            :current="request()->routeIs('admin.announcements')" wire:navigate>Announcements</flux:navlist.item>
         @endif
 
         @if (auth()->user()->hasAnyRole(['healthcare_admin']))
@@ -54,9 +52,20 @@
             :current="request()->routeIs('healthcare_admin.patients')" wire:navigate>Patients</flux:navlist.item>
           <flux:navlist.item icon="document-text" :href="route('healthcare_admin.reports')"
             :current="request()->routeIs('healthcare_admin.reports')" wire:navigate>Reports</flux:navlist.item>
-          <flux:navlist.item icon="megaphone" :href="route('healthcare_admin.announcements')"
-            :current="request()->routeIs('healthcare_admin.announcements')" wire:navigate>Announcements</flux:navlist.item>
-        @endif        {{-- @if (auth()->user()->hasAnyRole(['patient']))
+        @endif
+
+        @if (auth()->user()->hasAnyRole(['doctor']))
+          <flux:navlist.item icon="home" :href="route('doctor.dashboard')"
+            :current="request()->routeIs('doctor.dashboard')" wire:navigate>{{ __('Dashboard') }}</flux:navlist.item>
+          <flux:navlist.item icon="calendar-days" :href="route('doctor.appointments.list')"
+            :current="request()->routeIs('doctor.appointments.*')" wire:navigate>Appointments</flux:navlist.item>
+          <flux:navlist.item icon="user-group" :href="route('doctor.patients')"
+            :current="request()->routeIs('doctor.patients')" wire:navigate>My Patients</flux:navlist.item>
+          <flux:navlist.item icon="clipboard-document-list" :href="route('doctor.medical-records.create')"
+            :current="request()->routeIs('doctor.medical-records.create')" wire:navigate>New Medical Record</flux:navlist.item>
+        @endif
+
+        {{-- @if (auth()->user()->hasAnyRole(['patient']))
           <flux:navlist.item icon="calendar-days" :href="route('patient.appointments.list')"
             :current="request()->routeIs('patient.appointments.*')" wire:navigate>My Appointments</flux:navlist.item>
           <flux:navlist.item icon="calendar" :href="route('patient.book-appointment')"
