@@ -54,11 +54,14 @@ class RegisterPatient extends Component
     // Disease capture (for walk-ins)
     public string $disease_type = '';
 
+    // Service selection for walk-in patients
+    public ?int $service_id = null;
+
     public function mount(): void
     {
-        // Ensure only medical records admin can access
+        // Ensure only healthcare admins can access
         $user = Auth::user();
-        if (! $user || $user->role?->name !== 'healthcare_admin' || $user->admin_category?->value !== 'medical_records') {
+        if (! $user || $user->role?->name !== 'healthcare_admin') {
             abort(403, 'Unauthorized');
         }
     }
@@ -85,8 +88,9 @@ class RegisterPatient extends Component
             $base['password'] = 'required|min:8|confirmed';
             $base['contact_number'] = 'required|string|unique:users,contact_number';
         } else {
-            // Walk-in disease type is required when not creating a user
-            $base['disease_type'] = 'required|in:rabies,malaria,dengue,measles';
+            // Walk-in requires service selection
+            $base['service_id'] = 'required|exists:services,id';
+            $base['disease_type'] = 'nullable|in:rabies,malaria,dengue,measles';
         }
 
         return $base;
@@ -154,12 +158,26 @@ class RegisterPatient extends Component
                     'medical_history' => ! empty($this->medical_history) ? [$this->medical_history] : null,
                 ]);
 
-                // Create required disease record for walk-in
-                $this->createDiseaseRecord($patient->id);
+                // Create walk-in appointment for the selected service
+                if ($this->service_id) {
+                    \App\Models\Appointment::create([
+                        'patient_id' => $patient->id,
+                        'service_id' => $this->service_id,
+                        'appointment_number' => 'APT-' . now()->format('Ymd') . '-' . str_pad(\App\Models\Appointment::whereDate('created_at', today())->count() + 1, 4, '0', STR_PAD_LEFT),
+                        'scheduled_at' => now(),
+                        'status' => 'confirmed',
+                        'notes' => 'Walk-in patient registered by ' . Auth::user()->name,
+                    ]);
+                }
+
+                // Create disease record if disease_type is provided (for medical records admin)
+                if (! empty($this->disease_type)) {
+                    $this->createDiseaseRecord($patient->id);
+                }
             }
 
             $this->reset([
-                'create_user_account', 'name', 'email', 'password', 'password_confirmation', 'contact_number', 'date_of_birth', 'gender', 'barangay_id', 'blood_type', 'emergency_contact_name', 'emergency_contact_number', 'allergies', 'current_medications', 'medical_history', 'photo', 'disease_type',
+                'create_user_account', 'name', 'email', 'password', 'password_confirmation', 'contact_number', 'date_of_birth', 'gender', 'barangay_id', 'blood_type', 'emergency_contact_name', 'emergency_contact_number', 'allergies', 'current_medications', 'medical_history', 'photo', 'disease_type', 'service_id',
             ]);
 
             $this->dispatch('success', message: 'Patient registered successfully.');
@@ -196,8 +214,29 @@ class RegisterPatient extends Component
 
     public function render()
     {
+        $user = Auth::user();
+        $adminCategory = $user->admin_category;
+        
+        // Filter services by admin category
+        $servicesQuery = \App\Models\Service::query()->orderBy('name');
+        
+        if ($adminCategory && $adminCategory->value !== 'medical_records') {
+            $categoryMap = match ($adminCategory->value) {
+                'healthcard' => 'health_card',
+                'hiv' => 'hiv_testing',
+                'pregnancy' => 'pregnancy_care',
+                default => null,
+            };
+            
+            if ($categoryMap) {
+                $servicesQuery->where('category', $categoryMap);
+            }
+        }
+        
         return view('livewire.healthcare-admin.register-patient', [
             'barangays' => Barangay::orderBy('name')->get(),
+            'services' => $servicesQuery->get(),
+            'adminCategory' => $adminCategory,
         ]);
     }
 }
