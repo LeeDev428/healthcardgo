@@ -69,7 +69,7 @@
                     </form>
                 </flux:navmenu>
             </flux:dropdown>
-            @elseif (Auth::check() && Auth::user()->hasAnyRole(['super_admin', 'healthcare_admin', 'doctor']))
+            @elseif (Auth::check() && Auth::user()->hasAnyRole(['super_admin', 'healthcare_admin']))
             <flux:button href="{{ route('dashboard') }}" variant="primary" color="orange">
                 {{ __('app.dashboard') }}
             </flux:button>
