@@ -27,6 +27,8 @@ class Reports extends Component
 
     public ?int $barangay_id = null;
 
+    public ?string $health_card_purpose = null;
+
     public function mount(): void
     {
         $this->from = now()->startOfMonth()->toDateString();
@@ -70,6 +72,7 @@ class Reports extends Component
             'service_category' => $this->service_category,
             'disease_type' => $this->disease_type,
             'barangay_id' => $this->barangay_id,
+            'health_card_purpose' => $this->health_card_purpose,
         ];
 
         return match ($this->type) {
@@ -85,6 +88,7 @@ class Reports extends Component
         $this->doctor_id = null;
         $this->disease_type = null;
         $this->barangay_id = null;
+        $this->health_card_purpose = null;
         $this->from = now()->startOfMonth()->toDateString();
         $this->to = now()->toDateString();
 
