@@ -8,9 +8,13 @@
 <body class="min-h-screen bg-white dark:bg-zinc-800">
     <flux:header container class="bg-zinc-50 dark:bg-zinc-900 border-b border-zinc-200 dark:border-zinc-700" style="z-index: 30 !important;">
         <flux:spacer />
-        <div class="flex items-center gap-2">
+        @if(auth()->user()->hasAnyRole(['super_admin']))
+            <livewire:notifications.notification-bell :notificationRoute="'notifications.index'" />
+        @elseif(auth()->user()->hasAnyRole(['healthcare_admin']))
+            <livewire:notifications.notification-bell :notificationRoute="'notifications.index'" />
+        @else
             <livewire:notifications.notification-bell />
-        </div>
+        @endif
     </flux:header>
 
   <flux:sidebar sticky stashable class="border-e border-zinc-200 bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-900" style="z-index: 40 !important;">
