@@ -51,9 +51,10 @@
                 </div>
             @else
                 @foreach($recentNotifications as $notification)
-                    <div
+                    <button
                         wire:key="bell-notification-{{ $notification->id }}"
-                        class="px-4 py-3 hover:bg-zinc-50 dark:hover:bg-zinc-700/50 border-b border-zinc-100 dark:border-zinc-700 last:border-b-0 {{ !$notification->isRead() ? 'bg-blue-50/50 dark:bg-blue-900/10' : '' }}">
+                        wire:click="viewNotification({{ $notification->id }})"
+                        class="w-full px-4 py-3 hover:bg-zinc-50 dark:hover:bg-zinc-700/50 border-b border-zinc-100 dark:border-zinc-700 last:border-b-0 {{ !$notification->isRead() ? 'bg-blue-50/50 dark:bg-blue-900/10' : '' }} text-left transition-colors cursor-pointer">
 
                         <div class="flex gap-3">
                             <!-- Icon -->
@@ -136,7 +137,7 @@
                                 </button>
                             @endif
                         </div>
-                    </div>
+                    </button>
                 @endforeach
             @endif
         </div>
