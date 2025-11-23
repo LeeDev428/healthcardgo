@@ -12,7 +12,7 @@
       </div>
 
       <flux:button wire:click="openCreateModal" variant="primary">
-        <flux:icon name="plus" class="h-4 w-4 mr-4" />
+        <flux:icon name="plus" class="h-4 w-6 mr-4" />
         {{ __('New Announcement') }}
       </flux:button>
     </div>
