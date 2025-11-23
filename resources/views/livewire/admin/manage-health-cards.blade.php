@@ -266,7 +266,7 @@
                 </div>
 
                 <!-- QR Code -->
-                <div class="space-y-3">
+                {{-- <div class="space-y-3">
                     <flux:heading size="md">QR Code</flux:heading>
 
                     <div class="bg-white p-4 rounded-lg border border-zinc-200">
@@ -276,7 +276,7 @@
                     <flux:text size="sm" class="text-zinc-500 text-center">
                         Scan to verify patient information
                     </flux:text>
-                </div>
+                </div> --}}
             </div>
 
             <!-- Card Details -->
