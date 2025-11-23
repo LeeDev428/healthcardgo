@@ -123,12 +123,16 @@
                 <flux:text size="sm">{{ $patient->appointments->count() }}</flux:text>
               </td>
               <td class="px-6 py-4">
-                @if($patient->user->status === 'approved')
-                  <flux:badge variant="success" size="sm">Active</flux:badge>
-                @elseif($patient->user->status === 'inactive')
-                  <flux:badge variant="danger" size="sm">Inactive</flux:badge>
-                @elseif($patient->user->status === 'pending')
-                  <flux:badge variant="warning" size="sm">Pending</flux:badge>
+                @if($patient->user)
+                  @if($patient->user->status === 'approved')
+                    <flux:badge variant="success" size="sm">Active</flux:badge>
+                  @elseif($patient->user->status === 'inactive')
+                    <flux:badge variant="danger" size="sm">Inactive</flux:badge>
+                  @elseif($patient->user->status === 'pending')
+                    <flux:badge variant="warning" size="sm">Pending</flux:badge>
+                  @endif
+                @else
+                  <flux:badge variant="ghost" size="sm">Walk-in</flux:badge>
                 @endif
               </td>
               <td class="px-6 py-4">
@@ -139,14 +143,16 @@
                   {{-- <flux:button wire:click="editPatient({{ $patient->id }})" variant="ghost" size="sm">
                     <flux:icon name="pencil" />
                   </flux:button> --}}
-                  @if($patient->user->status === 'approved')
-                    <flux:button wire:click="deactivatePatient({{ $patient->id }})" variant="ghost" size="sm">
-                      <flux:icon name="x-circle" />
-                    </flux:button>
-                  @elseif($patient->user->status === 'inactive')
-                    <flux:button wire:click="activatePatient({{ $patient->id }})" variant="ghost" size="sm">
-                      <flux:icon name="check-circle" />
-                    </flux:button>
+                  @if($patient->user)
+                    @if($patient->user->status === 'approved')
+                      <flux:button wire:click="deactivatePatient({{ $patient->id }})" variant="ghost" size="sm">
+                        <flux:icon name="x-circle" />
+                      </flux:button>
+                    @elseif($patient->user->status === 'inactive')
+                      <flux:button wire:click="activatePatient({{ $patient->id }})" variant="ghost" size="sm">
+                        <flux:icon name="check-circle" />
+                      </flux:button>
+                    @endif
                   @endif
                 </div>
               </td>
@@ -211,12 +217,16 @@
             </div>
             <div>
               <flux:text size="sm" class="text-zinc-600 dark:text-zinc-400">Status</flux:text>
-              @if($selectedPatient->user->status === 'approved')
-                <flux:badge variant="success">Active</flux:badge>
-              @elseif($selectedPatient->user->status === 'inactive')
-                <flux:badge variant="danger">Inactive</flux:badge>
+              @if($selectedPatient->user)
+                @if($selectedPatient->user->status === 'approved')
+                  <flux:badge variant="success">Active</flux:badge>
+                @elseif($selectedPatient->user->status === 'inactive')
+                  <flux:badge variant="danger">Inactive</flux:badge>
+                @else
+                  <flux:badge variant="warning">{{ ucfirst($selectedPatient->user->status) }}</flux:badge>
+                @endif
               @else
-                <flux:badge variant="warning">{{ ucfirst($selectedPatient->user->status) }}</flux:badge>
+                <flux:badge variant="ghost">Walk-in</flux:badge>
               @endif
             </div>
           </div>
