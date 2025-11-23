@@ -81,7 +81,6 @@ class ManageHealthCards extends Component
                 'card_number' => HealthCard::generateCardNumber(),
                 'issue_date' => $this->issue_date,
                 'expiry_date' => $this->expiry_date,
-                'qr_code' => $qrCodeDataUri,
                 'status' => $this->status,
                 'medical_data' => [
                     'blood_type' => $patient->blood_type,
@@ -164,7 +163,6 @@ class ManageHealthCards extends Component
             $medicalData['regenerated_at'] = now()->toIso8601String();
 
             $card->update([
-                'qr_code' => $qrCodeDataUri,
                 'medical_data' => $medicalData,
             ]);
 
