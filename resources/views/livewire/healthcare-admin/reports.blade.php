@@ -66,11 +66,11 @@
             </flux:select>
         </div>
         <div class="flex flex-col gap-1" x-show="$wire.type === 'appointments'">
-            <flux:label class="text-sm text-gray-600">Doctor</flux:label>
-            <flux:select wire:model.live="doctor_id">
-                <option value="">All</option>
-                @foreach($doctors as $doc)
-                    <option value="{{ $doc->id }}">{{ $doc->name }}</option>
+            <flux:label class="text-sm text-gray-600">Barangay</flux:label>
+            <flux:select wire:model.live="barangay_id">
+                <option value="">All Barangays</option>
+                @foreach($barangays as $barangay)
+                    <option value="{{ $barangay->id }}">{{ $barangay->name }}</option>
                 @endforeach
             </flux:select>
         </div>
